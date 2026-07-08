@@ -8,7 +8,7 @@ type Tab = "보유" | "관심";
 
 export default function ListPage() {
   const router = useRouter();
-  const { entries } = useAppContext();
+  const { entries, isHydrated } = useAppContext();
   const [tab, setTab] = useState<Tab>("보유");
 
   const filtered = useMemo(
@@ -38,7 +38,10 @@ export default function ListPage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        {filtered.length === 0 && (
+        {!isHydrated && (
+          <p className="text-sm text-slate-400">불러오는 중이에요...</p>
+        )}
+        {isHydrated && filtered.length === 0 && (
           <p className="text-sm text-slate-400">아직 점검한 {tab} 종목이 없어요.</p>
         )}
         {filtered.map((entry) => (

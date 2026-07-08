@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { CheckCard, JudgmentRecord, Stock, StockEntry } from "../types";
+import { getOrCreateSessionId } from "../session";
 
 interface DraftState {
   stock: Stock | null;
@@ -13,6 +14,7 @@ interface DraftState {
 interface AppContextValue {
   entries: StockEntry[];
   draft: DraftState;
+  isHydrated: boolean;
   startNewCheck: () => void;
   selectStock: (stock: Stock) => void;
   setHolding: (holding: boolean) => void;
@@ -32,11 +34,29 @@ const AppContext = createContext<AppContextValue | null>(null);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [entries, setEntries] = useState<StockEntry[]>([]);
   const [draft, setDraft] = useState<DraftState>(initialDraft);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const id = getOrCreateSessionId();
+    setSessionId(id);
+
+    fetch(`/api/judgments?sessionId=${encodeURIComponent(id)}`)
+      .then((res) => (res.ok ? res.json() : { entries: [] }))
+      .then((data: { entries?: StockEntry[] }) => {
+        setEntries(data.entries ?? []);
+      })
+      .catch((error) => {
+        console.error("판단 타임라인을 불러오지 못했어요:", error);
+      })
+      .finally(() => setIsHydrated(true));
+  }, []);
 
   const value = useMemo<AppContextValue>(
     () => ({
       entries,
       draft,
+      isHydrated,
       startNewCheck: () => setDraft(initialDraft),
       selectStock: (stock) => setDraft({ ...initialDraft, stock }),
       setHolding: (holding) => setDraft((prev) => ({ ...prev, holding })),
@@ -69,10 +89,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
           };
           return next;
         });
+
+        if (sessionId) {
+          fetch("/api/judgments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sessionId,
+              stockCode: stock.code,
+              stockName: stock.name,
+              holding,
+              reason,
+              checkCard,
+            }),
+          }).catch((error) => {
+            console.error("판단 기록 저장에 실패했어요:", error);
+          });
+        }
       },
       getEntry: (code) => entries.find((entry) => entry.stock.code === code),
     }),
-    [entries, draft]
+    [entries, draft, isHydrated, sessionId]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
