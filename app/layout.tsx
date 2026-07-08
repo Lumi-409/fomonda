@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { CheckFlowProvider } from "@/lib/context/check-flow-context";
+import { AppProvider } from "@/lib/context/app-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "포모온다",
-  description: "매수·매도 충동 순간의 판단 이유를 점검하는 메타인지 점검 카드",
+  description:
+    "매수·매도 판단을 대신하지 않고, 뇌동매매·FOMO·불안에 휩쓸린 건 아닌지 스스로 점검하도록 돕는 메타인지 AI",
 };
 
 export default function RootLayout({
@@ -15,11 +16,11 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <CheckFlowProvider>
+        <AppProvider>
           <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-10">
             {children}
           </main>
-        </CheckFlowProvider>
+        </AppProvider>
       </body>
     </html>
   );

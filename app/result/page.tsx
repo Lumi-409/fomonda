@@ -3,26 +3,23 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import PrimaryButton from "@/components/primary-button";
-import { useCheckFlow } from "@/lib/context/check-flow-context";
+import { useAppContext } from "@/lib/context/app-context";
 
-export default function CardPage() {
+export default function ResultPage() {
   const router = useRouter();
-  const { checkCard, reason, setSavedCriterion } = useCheckFlow();
+  const { draft } = useAppContext();
 
   useEffect(() => {
-    if (!checkCard) {
-      router.replace("/register");
+    if (!draft.checkCard) {
+      router.replace("/search");
     }
-  }, [checkCard, router]);
+  }, [draft.checkCard, router]);
 
-  if (!checkCard) {
+  if (!draft.checkCard) {
     return null;
   }
 
-  const handleSaveCriterion = () => {
-    setSavedCriterion(reason);
-    router.push("/saved");
-  };
+  const { checkCard } = draft;
 
   return (
     <div className="flex flex-1 flex-col justify-between gap-8">
@@ -35,25 +32,21 @@ export default function CardPage() {
         </section>
 
         <section className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="text-sm font-semibold text-slate-500">
-            근거로 보기 어려운 부분
-          </h2>
+          <h2 className="text-sm font-semibold text-slate-500">약한 근거</h2>
           <p className="text-sm leading-relaxed text-slate-800">
             {checkCard.weakPoints}
           </p>
         </section>
 
         <section className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="text-sm font-semibold text-slate-500">
-            최근 이슈 연결 포인트
-          </h2>
+          <h2 className="text-sm font-semibold text-slate-500">관련 객관적 자료</h2>
           <p className="text-sm leading-relaxed text-slate-800">
             {checkCard.newsConnection}
           </p>
         </section>
 
         <section className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="text-sm font-semibold text-slate-500">확인 질문</h2>
+          <h2 className="text-sm font-semibold text-slate-500">스스로 점검할 질문</h2>
           <ol className="flex flex-col gap-2">
             {checkCard.checkQuestions.map((question, index) => (
               <li key={index} className="text-sm leading-relaxed text-slate-800">
@@ -65,10 +58,12 @@ export default function CardPage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <PrimaryButton variant="secondary" onClick={() => router.push("/rewrite")}>
-          판단 이유 다시 쓰기
+        <PrimaryButton onClick={() => router.push("/reason")}>
+          기준 재작성
         </PrimaryButton>
-        <PrimaryButton onClick={handleSaveCriterion}>이 기준 저장하기</PrimaryButton>
+        <PrimaryButton variant="secondary" onClick={() => router.push("/list")}>
+          리스트 보러가기
+        </PrimaryButton>
       </div>
     </div>
   );
