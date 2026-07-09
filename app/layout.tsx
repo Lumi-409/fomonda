@@ -15,9 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>
+      <body className="bg-white">
         <AppProvider>
-          <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-10">
+          <main className="relative mx-auto flex min-h-screen w-full max-w-page flex-col bg-white">
             {children}
           </main>
         </AppProvider>

@@ -1,6 +1,54 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
+
+@font-face {
+  font-family: "Paperlogy";
+  src: url("https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy-7Bold.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Colors — Gray Scale */
+  --color-gray-50: #f9f9fa;
+  --color-gray-100: #f3f2f8;
+  --color-gray-200: #e3e2e9;
+  --color-gray-400: #aeaebe;
+  --color-gray-500: #8e8e9e;
+  --color-gray-600: #78788b;
+  --color-gray-700: #585869;
+  --color-gray-800: #3a3a50;
+  --color-gray-900: #231f3a;
+  --color-gray-950: #1a1a2e;
+
+  /* Colors — Sub */
+  --color-pink-300: #ffb3e0;
+  --color-pink-500: #f472b6;
+  --color-pink-700: #be3a8a;
+  --color-purple-700: #5b47d4;
+  --color-green-500: #3dcb5a;
+
+  /* Gradients */
+  --gradient-btn: linear-gradient(180deg, #2e2a47 0%, #231f3a 100%);
+  --gradient-calm-subtle: linear-gradient(180deg, rgba(255, 240, 250, 0.4) 0%, rgba(242, 240, 255, 0.4) 100%);
+  --gradient-calm-accent: linear-gradient(-90deg, #ffafe1 0%, #6e53ff 100%);
+
+  /* Typography */
+  --font-primary: "Pretendard", ui-sans-serif, system-ui;
+  --font-logo: "Paperlogy", var(--font-primary);
+
+  /* Shadows */
+  --shadow-card: rgba(35, 31, 58, 0.04) 0px 0px 0px, rgba(35, 31, 58, 0.06) 0px 2px 4px, rgba(35, 31, 58, 0.08) 0px 8px 12px;
+  --shadow-modal: rgba(35, 31, 58, 0.08) 0px 8px 24px, rgba(35, 31, 58, 0.06) 0px 2px 8px, rgba(35, 31, 58, 0.04) 0px 0px 0px 1px;
+
+  /* Layout */
+  --page-max-width: 390px;
+}
 
 html,
 body {
@@ -8,6 +56,7 @@ body {
 }
 
 body {
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #ffffff;
+  color: var(--color-gray-900);
+  font-family: var(--font-primary);
 }

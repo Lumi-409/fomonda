@@ -3,10 +3,16 @@ export interface Stock {
   name: string;
 }
 
+export interface CheckListItem {
+  claim: string;
+  detail: string;
+}
+
 export interface CheckCard {
+  summaryHeadline: string;
   summary: string;
-  weakPoints: string;
-  newsConnection: string;
+  weakPoints: CheckListItem[];
+  evidence: CheckListItem[];
   checkQuestions: string[];
 }
 

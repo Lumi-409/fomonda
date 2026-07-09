@@ -2,7 +2,7 @@
 
 import { ButtonHTMLAttributes } from "react";
 
-type Variant = "primary" | "secondary";
+type Variant = "primary" | "ghost";
 
 interface PrimaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -10,9 +10,9 @@ interface PrimaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-slate-900 text-white hover:bg-slate-700 disabled:bg-slate-300 disabled:text-slate-500",
-  secondary:
-    "bg-white text-slate-900 border border-slate-300 hover:bg-slate-50 disabled:text-slate-300 disabled:border-slate-200",
+    "rounded-button px-xl py-lg bg-gradient-btn text-gray-50 hover:brightness-110 disabled:bg-none disabled:bg-gray-200 disabled:text-gray-400",
+  ghost:
+    "rounded-card-sm border border-gray-200 px-lg py-sm bg-transparent text-gray-700 hover:bg-gray-50 disabled:border-gray-100 disabled:text-gray-300",
 };
 
 export default function PrimaryButton({
@@ -22,7 +22,7 @@ export default function PrimaryButton({
 }: PrimaryButtonProps) {
   return (
     <button
-      className={`w-full rounded-xl px-4 py-3 text-sm font-medium transition-colors disabled:cursor-not-allowed ${variantClasses[variant]} ${className}`}
+      className={`w-full flex items-center justify-center text-label font-semibold transition-colors disabled:cursor-not-allowed ${variantClasses[variant]} ${className}`}
       {...props}
     />
   );

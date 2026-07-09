@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PrimaryButton from "@/components/primary-button";
+import StepTopBar from "@/components/step-topbar";
 import { useAppContext } from "@/lib/context/app-context";
 import { CheckCard } from "@/lib/types";
 
@@ -72,68 +73,69 @@ export default function ReasonPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
-        <p className="text-sm text-slate-600">메타인지 가동 중이에요</p>
+      <div className="flex flex-1 flex-col items-center justify-center gap-lg text-center">
+        <div className="h-10 w-10 animate-spin rounded-badge border-4 border-gray-200 border-t-gray-800" />
+        <p className="text-label-sm text-gray-700">메타인지 가동 중이에요</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-1 flex-col justify-between gap-8">
-      <div className="flex flex-col gap-6">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">판단 이유 입력</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            {draft.stock.name} · {draft.holding ? "보유" : "관심"}
-          </p>
-        </div>
-
-        {previousJudgment && (
-          <div className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <span className="text-xs font-medium text-slate-400">직전 판단 이유</span>
-            <p className="text-sm leading-relaxed text-slate-600">
-              {previousJudgment.reason}
+    <div className="flex flex-1 flex-col">
+      <StepTopBar step={3} totalSteps={3} />
+      <div className="flex flex-1 flex-col justify-between gap-3xl px-lg py-2xl">
+        <div className="flex flex-col gap-2xl">
+          <div>
+            <h1 className="text-heading-sub font-semibold text-gray-950">판단 이유 입력</h1>
+            <p className="mt-xs text-label-sm text-gray-600">
+              {draft.stock.name} · {draft.holding ? "보유" : "관심"}
             </p>
           </div>
-        )}
 
-        <div className="flex flex-col gap-2">
-          <textarea
-            value={reasonText}
-            onChange={(e) => setReasonText(e.target.value.slice(0, MAX_LENGTH))}
-            maxLength={MAX_LENGTH}
-            rows={5}
-            placeholder="지금 이 판단을 내린 이유를 적어주세요"
-            className="resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-500"
-          />
-          <span className="self-end text-xs text-slate-400">
-            {reasonText.length}/{MAX_LENGTH}
-          </span>
-        </div>
+          {previousJudgment && (
+            <div className="flex flex-col gap-xs rounded-card bg-gray-50 p-lg">
+              <span className="text-eyebrow font-semibold text-gray-500">직전 판단 이유</span>
+              <p className="text-label-sm text-gray-600">{previousJudgment.reason}</p>
+            </div>
+          )}
 
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-slate-700">입력 예시</span>
-          <div className="flex flex-col gap-2">
-            {EXAMPLES.map((example) => (
-              <button
-                key={example}
-                type="button"
-                onClick={() => setReasonText(example.slice(0, MAX_LENGTH))}
-                className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-600 hover:bg-slate-50"
-              >
-                {example}
-              </button>
-            ))}
+          <div className="flex flex-col gap-sm">
+            <textarea
+              value={reasonText}
+              onChange={(e) => setReasonText(e.target.value.slice(0, MAX_LENGTH))}
+              maxLength={MAX_LENGTH}
+              rows={5}
+              placeholder="지금 이 판단을 내린 이유를 적어주세요"
+              className="resize-none rounded-input border border-gray-200 bg-white px-lg py-md text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+            />
+            <span className="self-end text-eyebrow text-gray-400">
+              {reasonText.length}/{MAX_LENGTH}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-sm">
+            <span className="text-label-sm font-semibold text-gray-900">입력 예시</span>
+            <div className="flex flex-col gap-sm">
+              {EXAMPLES.map((example) => (
+                <button
+                  key={example}
+                  type="button"
+                  onClick={() => setReasonText(example.slice(0, MAX_LENGTH))}
+                  className="rounded-card border border-gray-200 bg-white px-lg py-md text-left text-label-sm text-gray-600 transition-colors hover:bg-gray-50"
+                >
+                  {example}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-col gap-2">
-        {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-        <PrimaryButton onClick={handleSubmit} disabled={!canSubmit}>
-          {errorMessage ? "다시 시도" : "점검 시작"}
-        </PrimaryButton>
+        <div className="flex flex-col gap-sm">
+          {errorMessage && <p className="text-label-sm text-pink-700">{errorMessage}</p>}
+          <PrimaryButton onClick={handleSubmit} disabled={!canSubmit}>
+            {errorMessage ? "다시 시도" : "점검 시작"}
+          </PrimaryButton>
+        </div>
       </div>
     </div>
   );

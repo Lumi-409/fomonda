@@ -1,4 +1,4 @@
-import { CheckCard, StockEntry, JudgmentRecord } from "@/lib/types";
+import { CheckCard, CheckListItem, StockEntry, JudgmentRecord } from "@/lib/types";
 
 interface JudgmentRow {
   id: string;
@@ -7,7 +7,7 @@ interface JudgmentRow {
   stock_name: string;
   holding: boolean;
   reason: string;
-  check_card: CheckCard;
+  check_card: unknown;
   created_at: string;
 }
 
@@ -80,7 +80,7 @@ function groupRowsByStock(rows: JudgmentRow[]): StockEntry[] {
     const record: JudgmentRecord = {
       id: row.id,
       reason: row.reason,
-      checkCard: row.check_card,
+      checkCard: normalizeCheckCard(row.check_card),
       createdAt: row.created_at,
     };
 
@@ -98,4 +98,41 @@ function groupRowsByStock(rows: JudgmentRow[]): StockEntry[] {
   }
 
   return Array.from(entries.values());
+}
+
+// 결과 카드 스키마가 (summary/weakPoints:string/newsConnection) → (summaryHeadline/weakPoints:CheckListItem[]/evidence)로
+// 바뀌기 전에 저장된 레코드도 안전하게 표시하기 위한 하위 호환 변환.
+function normalizeCheckCard(raw: unknown): CheckCard {
+  const data = (raw ?? {}) as Record<string, unknown>;
+
+  if (isCurrentShape(data)) {
+    return {
+      summaryHeadline: data.summaryHeadline as string,
+      summary: data.summary as string,
+      weakPoints: data.weakPoints as CheckListItem[],
+      evidence: data.evidence as CheckListItem[],
+      checkQuestions: (data.checkQuestions as string[]) ?? [],
+    };
+  }
+
+  const legacySummary = typeof data.summary === "string" ? data.summary : "";
+  const legacyWeakPoints = typeof data.weakPoints === "string" ? data.weakPoints : "";
+  const legacyNewsConnection =
+    typeof data.newsConnection === "string" ? data.newsConnection : "";
+
+  return {
+    summaryHeadline: legacySummary,
+    summary: legacySummary,
+    weakPoints: legacyWeakPoints ? [{ claim: legacyWeakPoints, detail: "" }] : [],
+    evidence: legacyNewsConnection ? [{ claim: legacyNewsConnection, detail: "" }] : [],
+    checkQuestions: Array.isArray(data.checkQuestions) ? (data.checkQuestions as string[]) : [],
+  };
+}
+
+function isCurrentShape(data: Record<string, unknown>): boolean {
+  return (
+    typeof data.summaryHeadline === "string" &&
+    Array.isArray(data.weakPoints) &&
+    Array.isArray(data.evidence)
+  );
 }
