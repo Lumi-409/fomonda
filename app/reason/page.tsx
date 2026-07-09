@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AmbientGlow from "@/components/ambient-glow";
+import { HoldingBadge } from "@/components/holding-badge";
+import { IconSwooshGradient } from "@/components/icons";
 import PrimaryButton from "@/components/primary-button";
 import StepTopBar from "@/components/step-topbar";
 import { useAppContext } from "@/lib/context/app-context";
@@ -73,23 +76,35 @@ export default function ReasonPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-lg text-center">
-        <div className="h-10 w-10 animate-spin rounded-badge border-4 border-gray-200 border-t-gray-800" />
-        <p className="text-label-sm text-gray-700">메타인지 가동 중이에요</p>
+      <div className="relative isolate flex flex-1 flex-col items-center justify-center gap-md overflow-hidden bg-white text-center">
+        <AmbientGlow />
+        <IconSwooshGradient className="mb-sm h-8 w-9" />
+        <p className="text-heading-sub font-semibold text-gray-900">
+          투자 메타인지를 가동 중이에요
+        </p>
+        <p className="text-label-sm text-gray-500">
+          판단 이유와 관련 뉴스를 비교하고 있어요
+        </p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-1 flex-col">
-      <StepTopBar step={3} totalSteps={3} />
+      <StepTopBar step={3} totalSteps={4} />
       <div className="flex flex-1 flex-col justify-between gap-3xl px-lg py-2xl">
         <div className="flex flex-col gap-2xl">
           <div>
-            <h1 className="text-heading-sub font-semibold text-gray-950">판단 이유 입력</h1>
-            <p className="mt-xs text-label-sm text-gray-600">
-              {draft.stock.name} · {draft.holding ? "보유" : "관심"}
-            </p>
+            <div className="text-heading-sub font-semibold text-gray-950">
+              <p>이 종목을 매수/매도 판단의</p>
+              <p>이유를 작성해주세요</p>
+            </div>
+            <div className="mt-sm flex gap-sm">
+              <HoldingBadge holding={draft.holding} />
+              <span className="rounded-badge bg-gray-100 px-md py-xs text-eyebrow font-semibold text-gray-700">
+                {draft.stock.name}
+              </span>
+            </div>
           </div>
 
           {previousJudgment && (
@@ -105,7 +120,7 @@ export default function ReasonPage() {
               onChange={(e) => setReasonText(e.target.value.slice(0, MAX_LENGTH))}
               maxLength={MAX_LENGTH}
               rows={5}
-              placeholder="지금 이 판단을 내린 이유를 적어주세요"
+              placeholder="매수/매도를 고민하고 있는 이유를 적어주세요"
               className="resize-none rounded-input border border-gray-200 bg-white px-lg py-md text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
             />
             <span className="self-end text-eyebrow text-gray-400">
@@ -114,7 +129,9 @@ export default function ReasonPage() {
           </div>
 
           <div className="flex flex-col gap-sm">
-            <span className="text-label-sm font-semibold text-gray-900">입력 예시</span>
+            <span className="text-label-sm font-semibold text-gray-900">
+              혹시 이런 이유인가요?
+            </span>
             <div className="flex flex-col gap-sm">
               {EXAMPLES.map((example) => (
                 <button

@@ -1,4 +1,29 @@
+"use client";
+
+import { useId } from "react";
+
 type IconProps = { className?: string };
+
+// 로고 스와시(node 241:1523) 재사용 — gradient-calm-accent로 채운 로딩 화면용 버전
+export function IconSwooshGradient({ className = "h-8 w-9" }: IconProps) {
+  const gradientId = useId();
+  return (
+    <svg viewBox="38 0 46 34" fill="none" className={className}>
+      <path
+        d="M40 13.9812C46.0292 14.6062 59.6204 18.75 59.6204 32C58.5985 18.9792 69.7372 2 82 2"
+        stroke={`url(#${gradientId})`}
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <defs>
+        <linearGradient id={gradientId} x1="82" y1="17" x2="40" y2="17" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FFAFE1" />
+          <stop offset="1" stopColor="#6E53FF" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
 // Figma node 241:1556 — icon/emoji-observe
 export function IconSearch({ className }: IconProps) {
@@ -120,18 +145,31 @@ export function IconThink({ className }: IconProps) {
   );
 }
 
-// Placeholder — Figma node 241:2456 (icon/summary-check) not yet retrieved (MCP rate limit)
+// Figma node 241:2456 — icon/summary-check, wrapped in a 24x24 box
 export function IconCheck({ className }: IconProps) {
+  const gradientId = useId();
   return (
-    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" className={className}>
-      <path
-        d="M1 6.3L5.3 10.6L15 1"
-        stroke="#5B47D4"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <span className={`flex h-6 w-6 shrink-0 items-center justify-center ${className ?? ""}`}>
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+        <path
+          d="M17.0005 0C17.5528 0 18.0005 0.447715 18.0005 1C18.0005 1.55228 17.5528 2 17.0005 2C15.1259 2 13.1601 3.32348 11.6538 5.43457C10.2781 7.36285 9.43993 9.74721 9.45169 11.8271C9.46626 12.0228 9.47513 12.2234 9.47513 12.4287C9.47506 12.9657 9.05075 13.4067 8.51419 13.4277C7.97756 13.4488 7.52009 13.0422 7.47806 12.5068C7.46317 12.3172 7.4557 12.1259 7.45267 11.9336C7.30082 10.0976 6.30745 8.86729 5.04447 8.02441C3.63461 7.0836 1.93389 6.66608 0.897005 6.55859C0.347889 6.50143 -0.0515273 6.01013 0.00540362 5.46094C0.0624283 4.91168 0.554749 4.5124 1.10404 4.56934C2.364 4.7 4.40087 5.19156 6.15384 6.36133C6.85931 6.8321 7.52266 7.42008 8.06986 8.1377C8.52184 6.76166 9.19799 5.43386 10.0259 4.27344C11.7118 1.91043 14.2036 0 17.0005 0Z"
+          fill={`url(#${gradientId})`}
+        />
+        <defs>
+          <linearGradient
+            id={gradientId}
+            x1="18.0005"
+            y1="6.71426"
+            x2="0"
+            y2="6.71426"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#FFAFE1" />
+            <stop offset="1" stopColor="#6E53FF" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </span>
   );
 }
 

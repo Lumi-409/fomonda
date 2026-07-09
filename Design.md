@@ -148,7 +148,10 @@ letter-spacing은 전 스타일 `0` (트래킹 없음).
 | 종류 | 배경 | 텍스트 | 크기/여백 | 사용처 |
 |------|------|--------|-----------|--------|
 | Primary | `--gradient-btn` | Gray 50 (`#f9f9fa`) | radius 16, `px-20 py-16`, `label`(16px) | 온보딩 "시작하기", 결과 "리스트 확인" |
-| Ghost | 배경 없음(투명) | Gray 700 (`#585869`) | radius 8, 1px 보더 Gray 200(`#e3e2e9`), `px-16 py-8`, `label`(16px) | 결과 "다시 점검하기" |
+| Secondary(서브 버튼) | Gray 100 (`#f3f2f8`) | Gray 700 (`#585869`) | radius 16, `px-20 py-16`, `label`(16px) — Primary와 크기/radius 동일, 배경만 다름 | 결과 "다시 점검하기" (Primary와 짝을 이루는 하단 2-버튼 조합 전용) |
+| Ghost | 배경 없음(투명) | Gray 700 (`#585869`) | radius 8, 1px 보더 Gray 200(`#e3e2e9`), `px-16 py-8`, `label`(16px) | 리스트 "종목 추가하기" |
+
+> **Secondary vs Ghost 구분 주의:** 둘 다 회색조 서브 버튼이지만 서로 다른 Figma 컴포넌트다. Secondary는 결과 화면 하단 2-버튼(Primary+Secondary) 조합에서만 쓰이고 Primary와 radius/padding을 공유한다. Ghost는 완전히 별도 컴포넌트로, 단독으로 쓰이며 투명 배경+보더+radius 8의 작은 아웃라인 버튼이다. 처음에 이 둘을 혼동해 결과 화면에 Ghost를 잘못 적용했던 적이 있다.
 
 **Ghost 버튼 확정 스펙 (Figma "Copy as CSS"로 직접 전달받음):**
 ```
@@ -219,6 +222,9 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 3. 하단 CTA — Primary 버튼 "시작하기" (full width)
 ```
 
+**Ambient Glow (구현 단계 추가 효과):** 온보딩과 "메타인지 가동 중" 로딩 화면 배경에, 크게 blur 처리된 원형 2개(Pink 300 opacity 40%, Purple 700 opacity 20%, `blur-3xl`)가 8~12초 주기로 서서히 위치·크기를 오가며 루프한다(`animate-drift-a` 10s, `animate-drift-b` 12s, 둘 다 ease-in-out). 벽에 비친 조명이 천천히 움직이는 느낌으로, 콘텐츠 위계를 해치지 않는 선에서만 사용한다. 구현체: `components/ambient-glow.tsx`.
+> **구현 주의:** 배경 글로우는 `-z-10` + `overflow-hidden` 조합으로 컨텐츠 뒤에 깔리는데, 부모 컨테이너가 `position: relative`만 있고 `isolate`(또는 z-index가 auto가 아닌 값)가 없으면 새로운 stacking context가 안 생겨 글로우가 문서 루트 레벨로 새어나가 아예 안 보이는 버그가 생긴다. 반드시 `relative isolate` 조합으로 컨테이너를 감싸야 한다.
+
 ---
 
 ## 9. 화면 구조 — 결과 (정보 위계)
@@ -232,7 +238,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
    - 헤드라인 2줄(heading-sub, Gray 950):
      "{근거수}개의 약한 근거가 있어요"
      "점검 결과를 확인해보세요"
-   - 탭바: 요약 / 근거 / 자료 / 질문 (4개, 스크롤 앵커)
+   - 탭바: 점검 요약 / 약한 근거 / 객관적 자료 / 셀프 체크 질문 (4개, 스크롤 앵커 — 라벨은 직접 제작한 화면 캡처 기준으로 원래 긴 버전으로 되돌림)
    - 판단 요약 카드 (gradient-calm-subtle 배경, 1px Gray 200 보더, radius 16, padding 20)
      · 타이틀: 체크 아이콘 + "판단을 요약했어요" (그라데이션 텍스트, label-m)
      · 헤드라인 2줄(label-m, Gray 800)
@@ -249,7 +255,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
    c. 스스로 점검할 질문 — 아이콘🤔 + label + 서브텍스트(eyebrow, Gray 500)
       Q1, Q2(, Q3) 질문 카드 → checkQuestions 배열 바인딩
 
-[하단: Ghost "다시 점검하기" + Primary "리스트 확인"]
+[하단: Secondary "다시 점검하기" + Primary "리스트 확인"]
 ```
 
 **정보 위계 원칙 (관찰 기반):**
@@ -442,3 +448,56 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-input: 8px;
 }
 ```
+
+---
+
+## 13. 화면 구조 — 검색 · 보유여부 · 이유입력 · 리스트 (직접 제작 캡처 반영)
+
+출처: 사용자가 Figma에서 직접 작업한 화면 캡처(`claude capture/screen/*.png`). 1~12장에서 다루지 않은 화면들과, 기존 §8~9 대비 바뀐 부분을 여기 기록한다.
+
+### 4단계 진행 흐름
+검색(1/4) → 보유여부(2/4) → 이유입력(3/4) → (제출/로딩·결과로 이어짐, 별도 4번째 화면은 없음). `StepTopBar`의 `totalSteps`는 3이 아니라 4를 쓴다.
+
+### 보유/관심 컬러 코드 (신규)
+종목 아바타·뱃지에서 보유 상태를 색으로 구분한다. 새 토큰을 추가하지 않고 기존 컬러의 opacity 변형으로 표현한다.
+- 보유: `bg-purple-700/10 text-purple-700`
+- 관심: `bg-pink-500/10 text-pink-700`
+구현체: `components/holding-badge.tsx` (`HoldingBadge`, `avatarClasses`)
+
+### 종목 검색
+- 헤드라인 2줄 + subtext, placeholder "종목명을 입력해주세요"
+- 검색어가 비어 있을 때: "최근 확인한 종목"(로컬 조회 이력, localStorage) + "추천 종목"(고정 4종목) 가로 스크롤 칩 — 칩은 `rounded-card bg-gray-100`
+- 검색어가 있을 때: 카드 없이 `border-b border-gray-100` 구분선만 있는 플랫 리스트, 종목명은 Purple 700 강조
+- 구현체: `lib/stocks/recent.ts`(최근), `lib/stocks/index.ts`의 `getRecommendedStocks()`(추천, 하드코딩)
+
+### 보유 여부 선택
+- 헤드라인 "{종목명}는 / 지금 보유하고 있는 종목인가요?" + subtext
+- 버튼 2개가 좌우가 아니라 세로로 쌓임, `rounded-card bg-gray-100`(보더 없음), 각각 풀와이드
+
+### 판단 이유 입력
+- 헤드라인 "이 종목을 매수/매도 판단의 / 이유를 작성해주세요"
+- 헤드라인 아래 `HoldingBadge` + 종목명 뱃지(`bg-gray-100`) 가로 배치로 기존 서브텍스트 라인 대체
+- "입력 예시" 라벨 → "혹시 이런 이유인가요?"
+- placeholder "매수/매도를 고민하고 있는 이유를 적어주세요"
+
+### 로딩 화면
+- 스피너 제거, 대신 로고 스와시를 gradient-calm-accent로 채운 버전(`IconSwooshGradient`) 노출
+- 헤드라인 "투자 메타인지를 가동 중이에요"(heading-sub) + subtext "판단 이유와 관련 뉴스를 비교하고 있어요"(label-sm, Gray 500)
+
+### 내 종목 리스트
+- 상단 고정 헤더: `font-logo` "Fomonda" 워드마크(좌) + "의견 남기기" 버튼(우, `rounded-badge bg-gray-100`)
+- 탭: 기존 필(pill) 스타일 → 밑줄 스타일(`border-b-2`, 활성 Gray 900 / 비활성 Gray 400, 공유 `border-gray-100` 베이스라인)
+- 종목 아바타: 보유/관심 컬러 코드 적용
+- 우측 텍스트: "판단 기록 N건" → "N회 점검" 뱃지(`rounded-badge bg-gray-100`)
+- "종목 추가하기" Ghost 버튼은 유지
+
+### 종목별 판단 타임라인
+- 헤더: 아바타(컬러코드) + 종목명 + "코드 · N회 점검" + 우측 `HoldingBadge`
+- "다시 점검하기" Primary 버튼이 헤더 바로 아래(상단)로 이동 — 기존에는 화면 최하단 Secondary였음, 하단 중복 버튼은 제거
+- 판단 기록 카드 프리뷰: 원문 `reason` 대신 `checkCard.summaryHeadline`(굵게) + `checkCard.summary`(설명)를 보여줌 — 원문은 상세 화면(탭 시 이동)에서 계속 확인 가능
+
+### 피드백(의견 남기기)
+- 리스트 헤더의 "의견 남기기" 탭 시 바텀시트 모달 오픈
+- 구성: 드래그 핸들바 + 타이틀 "포몬다에 의견을 남겨주세요" + subtext + textarea(500자) + Primary 버튼 "의견 남기기"
+- 제출 시 세션ID와 함께 Supabase `feedback` 테이블에 저장(`supabase/feedback.sql`, `lib/db/feedback.ts`, `/api/feedback`)
+- 구현체: `components/feedback-sheet.tsx`

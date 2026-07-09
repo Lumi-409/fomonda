@@ -67,6 +67,20 @@ const config: Config = {
       maxWidth: {
         page: "390px",
       },
+      keyframes: {
+        "drift-a": {
+          "0%, 100%": { transform: "translate(0%, -25%) scale(1)" },
+          "50%": { transform: "translate(6%, 30%) scale(1.15)" },
+        },
+        "drift-b": {
+          "0%, 100%": { transform: "translate(0%, 25%) scale(1)" },
+          "50%": { transform: "translate(-6%, -30%) scale(1.1)" },
+        },
+      },
+      animation: {
+        "drift-a": "drift-a 8s ease-in-out infinite",
+        "drift-b": "drift-b 9s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

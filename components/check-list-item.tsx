@@ -7,7 +7,7 @@ export function ListItemRow({ item }: { item: CheckListItem }) {
         <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-gray-800" />
         <p className="text-label-m font-semibold text-gray-800">{item.claim}</p>
       </div>
-      <p className="pl-[24px] text-eyebrow text-gray-700">{item.detail}</p>
+      <p className="pl-md text-eyebrow text-gray-700">{item.detail}</p>
     </li>
   );
 }

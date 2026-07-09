@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import AmbientGlow from "@/components/ambient-glow";
 import PrimaryButton from "@/components/primary-button";
 import { IconBrain, IconSearch, IconSprout } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
@@ -21,7 +22,8 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col bg-white">
+    <div className="relative isolate flex flex-1 flex-col overflow-hidden bg-white">
+      <AmbientGlow />
       <div className="flex flex-1 flex-col items-center justify-center gap-6xl py-4xl">
         <div className="flex flex-col items-center gap-3xl">
           <div className="flex flex-col items-center">
@@ -41,7 +43,7 @@ export default function OnboardingPage() {
             </svg>
             <p className="font-logo text-logo text-gray-900">Fomonda</p>
           </div>
-          <div className="flex flex-col items-center gap-md text-center text-body-lg text-gray-950">
+          <div className="flex flex-col items-center gap-xs text-center text-label font-semibold text-gray-600">
             <p>내 투자 판단이 흔들린다면</p>
             <p>지금 메타인지를 가동하세요</p>
           </div>

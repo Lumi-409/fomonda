@@ -51,8 +51,8 @@ export default function JudgmentDetailPage() {
         </div>
 
         <div className="flex w-full flex-col gap-lg rounded-card border border-gray-200 bg-gradient-calm-subtle p-xl">
-          <div className="flex items-center gap-sm">
-            <IconCheck className="shrink-0" />
+          <div className="flex items-center gap-xs">
+            <IconCheck />
             <p className="bg-gradient-calm-accent bg-clip-text text-label-m font-semibold text-transparent">
               판단을 요약했어요
             </p>

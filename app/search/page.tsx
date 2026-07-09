@@ -4,8 +4,24 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import StepTopBar from "@/components/step-topbar";
 import { useAppContext } from "@/lib/context/app-context";
-import { searchStocks } from "@/lib/stocks";
+import { getRecommendedStocks, searchStocks } from "@/lib/stocks";
+import { addRecentStock, getRecentStocks } from "@/lib/stocks/recent";
 import { Stock } from "@/lib/types";
+
+function StockChip({ stock, onClick }: { stock: Stock; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex shrink-0 items-center gap-sm rounded-card bg-gray-100 px-lg py-md text-left transition-colors hover:bg-gray-200"
+    >
+      <span className="whitespace-nowrap text-label-sm font-semibold text-gray-900">
+        {stock.name}
+      </span>
+      <span className="whitespace-nowrap text-eyebrow text-gray-400">{stock.code}</span>
+    </button>
+  );
+}
 
 export default function SearchPage() {
   const router = useRouter();
@@ -13,8 +29,18 @@ export default function SearchPage() {
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Stock[]>([]);
+  const [recent, setRecent] = useState<Stock[]>([]);
+  const recommended = getRecommendedStocks();
 
   useEffect(() => {
+    setRecent(getRecentStocks());
+  }, []);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
     let active = true;
     searchStocks(query).then((stocks) => {
       if (active) setResults(stocks);
@@ -25,18 +51,24 @@ export default function SearchPage() {
   }, [query]);
 
   const handleSelect = (stock: Stock) => {
+    addRecentStock(stock);
     selectStock(stock);
     router.push("/holding");
   };
 
+  const isSearching = query.trim().length > 0;
+
   return (
     <div className="flex flex-1 flex-col">
-      <StepTopBar step={1} totalSteps={3} />
+      <StepTopBar step={1} totalSteps={4} />
       <div className="flex flex-1 flex-col gap-2xl px-lg py-2xl">
         <div>
-          <h1 className="text-heading-sub font-semibold text-gray-950">종목 검색</h1>
+          <div className="text-heading-sub font-semibold text-gray-950">
+            <p>매수/매도를 고민 중이거나</p>
+            <p>관심있는 종목을 입력해주세요</p>
+          </div>
           <p className="mt-xs text-label-sm text-gray-600">
-            지금 고민 중인 종목을 검색해주세요.
+            종목명이나 코드로 검색할 수 있어요
           </p>
         </div>
 
@@ -44,26 +76,56 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="종목명 또는 종목코드"
+          placeholder="종목명을 입력해주세요"
           className="rounded-input border border-gray-200 bg-white px-lg py-md text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
         />
 
-        <div className="flex flex-col gap-sm">
-          {results.length === 0 && (
-            <p className="text-label-sm text-gray-400">검색 결과가 없어요.</p>
-          )}
-          {results.map((stock) => (
-            <button
-              key={stock.code}
-              type="button"
-              onClick={() => handleSelect(stock)}
-              className="flex items-center justify-between rounded-card border border-gray-200 bg-white px-lg py-md text-left transition-colors hover:bg-gray-50"
-            >
-              <span className="text-label-m font-semibold text-gray-900">{stock.name}</span>
-              <span className="text-eyebrow text-gray-400">{stock.code}</span>
-            </button>
-          ))}
-        </div>
+        {isSearching ? (
+          <div className="flex flex-col">
+            {results.length === 0 && (
+              <p className="text-label-sm text-gray-400">검색 결과가 없어요.</p>
+            )}
+            {results.map((stock) => (
+              <button
+                key={stock.code}
+                type="button"
+                onClick={() => handleSelect(stock)}
+                className="flex items-center justify-between border-b border-gray-100 py-lg text-left transition-colors hover:bg-gray-50"
+              >
+                <span className="text-label-m font-semibold text-purple-700">{stock.name}</span>
+                <span className="text-eyebrow text-gray-400">{stock.code}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2xl">
+            {recent.length > 0 && (
+              <div className="flex flex-col gap-sm">
+                <span className="text-label-sm font-semibold text-gray-900">
+                  최근 확인한 종목
+                </span>
+                <div className="flex gap-sm overflow-x-auto">
+                  {recent.map((stock) => (
+                    <StockChip
+                      key={stock.code}
+                      stock={stock}
+                      onClick={() => handleSelect(stock)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-sm">
+              <span className="text-label-sm font-semibold text-gray-900">추천 종목</span>
+              <div className="flex gap-sm overflow-x-auto">
+                {recommended.map((stock) => (
+                  <StockChip key={stock.code} stock={stock} onClick={() => handleSelect(stock)} />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -8,10 +8,10 @@ import { ListItemRow, QuestionRow } from "@/components/check-list-item";
 import { useAppContext } from "@/lib/context/app-context";
 
 const TABS = [
-  { id: "summary", label: "요약" },
-  { id: "weak-points", label: "근거" },
-  { id: "evidence", label: "자료" },
-  { id: "questions", label: "질문" },
+  { id: "summary", label: "점검 요약" },
+  { id: "weak-points", label: "약한 근거" },
+  { id: "evidence", label: "객관적 자료" },
+  { id: "questions", label: "셀프 체크 질문" },
 ] as const;
 
 export default function ResultPage() {
@@ -109,8 +109,8 @@ export default function ResultPage() {
             </div>
 
             <div className="flex w-[343px] max-w-full flex-col gap-lg rounded-card border border-gray-200 bg-gradient-calm-subtle p-xl">
-              <div className="flex items-center gap-sm">
-                <IconCheck className="shrink-0" />
+              <div className="flex items-center gap-xs">
+                <IconCheck />
                 <p className="bg-gradient-calm-accent bg-clip-text text-label-m font-semibold text-transparent">
                   판단을 요약했어요
                 </p>
@@ -197,7 +197,7 @@ export default function ResultPage() {
       </div>
 
       <div className="mt-auto flex gap-md px-lg pb-2xl pt-lg">
-        <PrimaryButton variant="ghost" className="flex-1" onClick={() => router.push("/reason")}>
+        <PrimaryButton variant="secondary" className="flex-1" onClick={() => router.push("/reason")}>
           다시 점검하기
         </PrimaryButton>
         <PrimaryButton className="flex-1" onClick={() => router.push("/list")}>
