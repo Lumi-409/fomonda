@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import StepTopBar from "@/components/step-topbar";
 import { useAppContext } from "@/lib/context/app-context";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 export default function HoldingPage() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function HoldingPage() {
   }
 
   const handleSelect = (holding: boolean) => {
+    trackEvent("Holding Selected", { holding, code: draft.stock?.code });
     setHolding(holding);
     router.push("/reason");
   };

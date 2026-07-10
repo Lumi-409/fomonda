@@ -6,6 +6,7 @@ import PrimaryButton from "@/components/primary-button";
 import { IconAlert, IconBrain, IconCheck, IconThink } from "@/components/icons";
 import { ListItemRow, QuestionRow } from "@/components/check-list-item";
 import { useAppContext } from "@/lib/context/app-context";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 const TABS = [
   { id: "summary", label: "점검 요약" },
@@ -202,10 +203,23 @@ export default function ResultPage() {
       </div>
 
       <div className="mt-auto flex gap-md px-lg pb-2xl pt-lg">
-        <PrimaryButton variant="secondary" className="flex-1" onClick={() => router.push("/reason")}>
+        <PrimaryButton
+          variant="secondary"
+          className="flex-1"
+          onClick={() => {
+            trackEvent("Recheck Clicked");
+            router.push("/reason");
+          }}
+        >
           다시 점검하기
         </PrimaryButton>
-        <PrimaryButton className="flex-1" onClick={() => router.push("/list")}>
+        <PrimaryButton
+          className="flex-1"
+          onClick={() => {
+            trackEvent("Result List Clicked");
+            router.push("/list");
+          }}
+        >
           리스트 확인
         </PrimaryButton>
       </div>

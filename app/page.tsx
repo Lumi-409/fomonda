@@ -5,6 +5,7 @@ import AmbientGlow from "@/components/ambient-glow";
 import PrimaryButton from "@/components/primary-button";
 import { IconBrain, IconSearch, IconSprout, IconSwooshGradient } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 const FEATURES = [
   { Icon: IconSearch, text: "판단 뒤에 숨은 진짜 이유를 관찰해요" },
@@ -17,6 +18,7 @@ export default function OnboardingPage() {
   const { startNewCheck } = useAppContext();
 
   const handleStart = () => {
+    trackEvent("Onboarding Start Clicked");
     startNewCheck();
     router.push("/search");
   };

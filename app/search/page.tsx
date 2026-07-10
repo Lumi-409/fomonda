@@ -8,6 +8,7 @@ import { useAppContext } from "@/lib/context/app-context";
 import { getRecommendedStocks, searchStocks } from "@/lib/stocks";
 import { addRecentStock, getRecentStocks } from "@/lib/stocks/recent";
 import { Stock } from "@/lib/types";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 function HighlightedName({ name, query }: { name: string; query: string }) {
   const index = name.toLowerCase().indexOf(query.toLowerCase());
@@ -65,7 +66,8 @@ export default function SearchPage() {
     };
   }, [query]);
 
-  const handleSelect = (stock: Stock) => {
+  const handleSelect = (stock: Stock, source: "search" | "recent" | "recommended") => {
+    trackEvent("Stock Selected", { code: stock.code, name: stock.name, source });
     addRecentStock(stock);
     selectStock(stock);
     router.push("/holding");
@@ -109,7 +111,7 @@ export default function SearchPage() {
               <button
                 key={stock.code}
                 type="button"
-                onClick={() => handleSelect(stock)}
+                onClick={() => handleSelect(stock, "search")}
                 className="flex items-center justify-between px-lg py-lg text-left transition-colors hover:bg-gray-50"
               >
                 <span className="text-label-m font-semibold">
@@ -131,7 +133,7 @@ export default function SearchPage() {
                     <StockChip
                       key={stock.code}
                       stock={stock}
-                      onClick={() => handleSelect(stock)}
+                      onClick={() => handleSelect(stock, "recent")}
                     />
                   ))}
                 </div>
@@ -142,7 +144,11 @@ export default function SearchPage() {
               <span className="text-label-sm font-semibold text-gray-500">추천 종목</span>
               <div className="flex gap-sm overflow-x-auto">
                 {recommended.map((stock) => (
-                  <StockChip key={stock.code} stock={stock} onClick={() => handleSelect(stock)} />
+                  <StockChip
+                    key={stock.code}
+                    stock={stock}
+                    onClick={() => handleSelect(stock, "recommended")}
+                  />
                 ))}
               </div>
             </div>

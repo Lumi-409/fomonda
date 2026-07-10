@@ -9,6 +9,7 @@ import PrimaryButton from "@/components/primary-button";
 import StepTopBar from "@/components/step-topbar";
 import { useAppContext } from "@/lib/context/app-context";
 import { CheckCard } from "@/lib/types";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 const MAX_LENGTH = 200;
 
@@ -44,6 +45,11 @@ export default function ReasonPage() {
     setIsLoading(true);
     setErrorMessage(null);
     const trimmed = reasonText.trim();
+    trackEvent("Reason Submitted", {
+      code: draft.stock.code,
+      holding: draft.holding,
+      length: trimmed.length,
+    });
 
     try {
       const res = await fetch("/api/check", {
@@ -62,14 +68,16 @@ export default function ReasonPage() {
       }
 
       const data: { checkCard: CheckCard } = await res.json();
+      trackEvent("Check Completed", { code: draft.stock.code });
       recordJudgment(trimmed, data.checkCard);
       router.push("/result");
     } catch (error) {
-      setErrorMessage(
+      const message =
         error instanceof Error
           ? error.message
-          : "지금 점검이 어려워요. 잠시 후 다시 시도해주세요"
-      );
+          : "지금 점검이 어려워요. 잠시 후 다시 시도해주세요";
+      trackEvent("Check Failed", { code: draft.stock.code, message });
+      setErrorMessage(message);
       setIsLoading(false);
     }
   };

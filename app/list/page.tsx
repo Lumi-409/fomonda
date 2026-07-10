@@ -8,6 +8,7 @@ import { avatarClasses } from "@/components/holding-badge";
 import { IconCheckboxState, IconGear, IconPlus } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
 import { StockEntry } from "@/lib/types";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 type Tab = "보유" | "관심";
 type SortBy = "recent" | "name" | "count";
@@ -93,7 +94,9 @@ export default function ListPage() {
     setIsDeleting(true);
     setDeleteError(null);
     try {
-      await deleteEntries(Array.from(selected));
+      const codes = Array.from(selected);
+      await deleteEntries(codes);
+      trackEvent("Stock Deleted", { count: codes.length });
       setIsDeleteConfirmOpen(false);
       exitEditMode();
     } catch (error) {

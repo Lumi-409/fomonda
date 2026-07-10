@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PrimaryButton from "@/components/primary-button";
 import { getOrCreateSessionId } from "@/lib/session";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 const MAX_LENGTH = 500;
 
@@ -43,6 +44,7 @@ export default function FeedbackSheet({ isOpen, onClose }: FeedbackSheetProps) {
         throw new Error("의견 등록에 실패했어요. 잠시 후 다시 시도해주세요");
       }
 
+      trackEvent("Feedback Submitted");
       handleClose();
     } catch (error) {
       setErrorMessage(

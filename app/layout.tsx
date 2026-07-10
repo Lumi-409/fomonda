@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AnalyticsPageView from "@/components/analytics-page-view";
 import { AppProvider } from "@/lib/context/app-context";
 import "./globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="bg-white">
+        <AnalyticsPageView />
         <AppProvider>
           <main className="relative mx-auto flex min-h-screen w-full max-w-page flex-col bg-white">
             {children}
