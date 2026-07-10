@@ -2,12 +2,12 @@ import { CheckListItem } from "@/lib/types";
 
 export function ListItemRow({ item }: { item: CheckListItem }) {
   return (
-    <li className="flex flex-col gap-xs">
+    <li className="flex flex-col gap-sm">
       <div className="flex items-start gap-sm">
         <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-gray-800" />
-        <p className="text-label-m font-semibold text-gray-800">{item.claim}</p>
+        <p className="text-label font-semibold text-gray-800">{item.claim}</p>
       </div>
-      <p className="pl-md text-eyebrow text-gray-700">{item.detail}</p>
+      <p className="pl-md text-label-sm text-gray-700">{item.detail}</p>
     </li>
   );
 }

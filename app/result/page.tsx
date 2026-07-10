@@ -87,11 +87,14 @@ export default function ResultPage() {
             className="flex flex-col gap-lg"
           >
             <div className="text-heading-sub font-semibold text-gray-950">
-              <p>{checkCard.weakPoints.length}개의 약한 근거가 있어요</p>
+              <p>
+                <span className="text-purple-700">{checkCard.weakPoints.length}개</span>의
+                약한 근거가 있어요
+              </p>
               <p>점검 결과를 확인해보세요</p>
             </div>
 
-            <div className="flex gap-sm overflow-x-auto py-sm">
+            <div className="sticky top-0 z-10 flex gap-sm overflow-x-auto bg-white py-sm">
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
@@ -108,38 +111,38 @@ export default function ResultPage() {
               ))}
             </div>
 
-            <div className="flex w-[343px] max-w-full flex-col gap-lg rounded-card border border-gray-200 bg-gradient-calm-subtle p-xl">
+            <div className="flex w-full flex-col gap-lg rounded-card border border-gray-200 bg-gradient-calm-subtle p-xl">
               <div className="flex items-center gap-xs">
                 <IconCheck />
-                <p className="bg-gradient-calm-accent bg-clip-text text-label-m font-semibold text-transparent">
+                <p className="bg-gradient-calm-accent bg-clip-text text-label font-semibold text-transparent">
                   판단을 요약했어요
                 </p>
               </div>
               <div className="flex flex-col gap-md">
-                <p className="text-label-m font-semibold text-gray-800">
+                <p className="text-label font-semibold text-gray-800">
                   {checkCard.summaryHeadline}
                 </p>
-                <p className="text-label-sm text-gray-700">{checkCard.summary}</p>
+                <p className="text-label-sm font-medium text-gray-700">{checkCard.summary}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-lg bg-gray-50">
+        <div className="flex flex-col gap-lg bg-gray-100">
           <section
             id="weak-points"
             ref={(el) => {
               sectionRefs.current["weak-points"] = el;
             }}
-            className="flex flex-col gap-lg bg-white p-xl"
+            className="flex flex-col gap-2xl bg-white p-xl"
           >
             <div className="flex items-center gap-sm">
-              <IconAlert className="shrink-0" />
-              <h2 className="text-label font-semibold text-gray-900">
-                약한 근거 {checkCard.weakPoints.length}개
+              <IconAlert className="h-5 w-auto shrink-0" />
+              <h2 className="text-label-lg font-semibold text-gray-900">
+                약한 근거 <span className="text-purple-700">{checkCard.weakPoints.length}개</span>
               </h2>
             </div>
-            <ul className="flex flex-col gap-md">
+            <ul className="flex flex-col gap-lg">
               {checkCard.weakPoints.map((item, index) => (
                 <ListItemRow key={index} item={item} />
               ))}
@@ -151,19 +154,19 @@ export default function ResultPage() {
             ref={(el) => {
               sectionRefs.current.evidence = el;
             }}
-            className="flex flex-col gap-lg bg-white p-xl"
+            className="flex flex-col gap-2xl bg-white p-xl"
           >
-            <div className="flex flex-col gap-sm">
+            <div className="flex flex-col gap-md">
               <div className="flex items-center gap-sm">
-                <IconBrain className="shrink-0" />
-                <h2 className="text-label font-semibold text-gray-900">메타인지 가동 자료</h2>
+                <IconBrain className="h-5 w-auto shrink-0" />
+                <h2 className="text-label-lg font-semibold text-gray-900">메타인지 가동 자료</h2>
               </div>
-              <p className="text-eyebrow text-gray-500">
+              <p className="text-label-sm text-gray-500">
                 종목의 객관적 자료를 정리했어요. 자료를 기반으로 기존 투자 판단을
                 점검해보세요
               </p>
             </div>
-            <ul className="flex flex-col gap-md">
+            <ul className="flex flex-col gap-lg">
               {checkCard.evidence.map((item, index) => (
                 <ListItemRow key={index} item={item} />
               ))}
@@ -175,14 +178,14 @@ export default function ResultPage() {
             ref={(el) => {
               sectionRefs.current.questions = el;
             }}
-            className="flex flex-col gap-lg bg-white p-xl"
+            className="flex flex-col gap-2xl bg-white p-xl"
           >
-            <div className="flex flex-col gap-sm">
+            <div className="flex flex-col gap-md">
               <div className="flex items-center gap-sm">
-                <IconThink className="shrink-0" />
-                <h2 className="text-label font-semibold text-gray-900">스스로 점검할 질문</h2>
+                <IconThink className="h-5 w-auto shrink-0" />
+                <h2 className="text-label-lg font-semibold text-gray-900">스스로 점검할 질문</h2>
               </div>
-              <p className="text-eyebrow text-gray-500">
+              <p className="text-label-sm text-gray-500">
                 아래의 질문을 한 번 대답해보면서 내가 왜 이런 판단을 내렸는지
                 객관적으로 한 번 더 점검해보세요
               </p>
