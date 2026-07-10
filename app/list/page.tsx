@@ -28,7 +28,7 @@ export default function ListPage() {
   return (
     <div className="flex flex-1 flex-col gap-2xl px-lg py-2xl">
       <div className="flex items-center justify-between">
-        <p className="font-logo text-heading-sm text-gray-900">Fomonda</p>
+        <p className="font-logo text-heading-sub text-gray-900">Fomonda</p>
         <button
           type="button"
           onClick={() => setIsFeedbackOpen(true)}

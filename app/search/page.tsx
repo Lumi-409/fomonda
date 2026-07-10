@@ -3,10 +3,25 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import StepTopBar from "@/components/step-topbar";
+import { IconSearchGlass } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
 import { getRecommendedStocks, searchStocks } from "@/lib/stocks";
 import { addRecentStock, getRecentStocks } from "@/lib/stocks/recent";
 import { Stock } from "@/lib/types";
+
+function HighlightedName({ name, query }: { name: string; query: string }) {
+  const index = name.indexOf(query);
+  if (!query || index === -1) {
+    return <span className="text-gray-700">{name}</span>;
+  }
+  return (
+    <span className="text-gray-700">
+      {name.slice(0, index)}
+      <span className="text-purple-500">{name.slice(index, index + query.length)}</span>
+      {name.slice(index + query.length)}
+    </span>
+  );
+}
 
 function StockChip({ stock, onClick }: { stock: Stock; onClick: () => void }) {
   return (
@@ -72,13 +87,16 @@ export default function SearchPage() {
           </p>
         </div>
 
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="종목명을 입력해주세요"
-          className="rounded-input border border-gray-200 bg-white px-lg py-md text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
-        />
+        <div className="relative">
+          <IconSearchGlass className="pointer-events-none absolute left-lg top-1/2 h-4 w-4 -translate-y-1/2 text-gray-600" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="종목명을 입력해주세요"
+            className="w-full rounded-input border border-gray-200 bg-white py-md pl-[40px] pr-lg text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+          />
+        </div>
 
         {isSearching ? (
           <div className="flex flex-col">
@@ -92,7 +110,9 @@ export default function SearchPage() {
                 onClick={() => handleSelect(stock)}
                 className="flex items-center justify-between border-b border-gray-100 py-lg text-left transition-colors hover:bg-gray-50"
               >
-                <span className="text-label-m font-semibold text-purple-700">{stock.name}</span>
+                <span className="text-label-m font-semibold">
+                  <HighlightedName name={stock.name} query={query} />
+                </span>
                 <span className="text-eyebrow text-gray-400">{stock.code}</span>
               </button>
             ))}

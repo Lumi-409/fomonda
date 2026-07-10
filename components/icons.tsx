@@ -173,6 +173,15 @@ export function IconCheck({ className }: IconProps) {
   );
 }
 
+export function IconSearchGlass({ className = "h-4 w-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" className={className}>
+      <circle cx="7" cy="7" r="5.25" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M14 14L11 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function IconBack({ className = "h-4 w-4" }: IconProps) {
   return (
     <svg viewBox="0 0 16 16" fill="none" className={className}>

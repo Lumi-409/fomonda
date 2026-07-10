@@ -73,14 +73,19 @@ export default function FeedbackSheet({ isOpen, onClose }: FeedbackSheetProps) {
           </p>
         </div>
 
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value.slice(0, MAX_LENGTH))}
-          maxLength={MAX_LENGTH}
-          rows={4}
-          placeholder="내용을 입력해주세요"
-          className="resize-none rounded-input border border-gray-200 bg-white px-lg py-md text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
-        />
+        <div className="relative">
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value.slice(0, MAX_LENGTH))}
+            maxLength={MAX_LENGTH}
+            rows={4}
+            placeholder="내용을 입력해주세요"
+            className="w-full resize-none rounded-input border border-gray-200 bg-white px-lg py-md pb-xl text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+          />
+          <span className="pointer-events-none absolute bottom-sm right-lg text-eyebrow text-gray-400">
+            {content.length}/{MAX_LENGTH}
+          </span>
+        </div>
 
         {errorMessage && <p className="text-label-sm text-pink-700">{errorMessage}</p>}
 

@@ -18,6 +18,7 @@ const config: Config = {
         "pink-300": "#ffb3e0",
         "pink-500": "#f472b6",
         "pink-700": "#be3a8a",
+        "purple-500": "#8b7cf6",
         "purple-700": "#5b47d4",
         "green-500": "#3dcb5a",
       },
@@ -57,7 +58,7 @@ const config: Config = {
         card: "16px",
         "card-sm": "8px",
         badge: "9999px",
-        input: "8px",
+        input: "12px",
       },
       boxShadow: {
         card: "rgba(35,31,58,0.04) 0px 0px 0px, rgba(35,31,58,0.06) 0px 2px 4px, rgba(35,31,58,0.08) 0px 8px 12px",

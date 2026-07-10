@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import AmbientGlow from "@/components/ambient-glow";
 import PrimaryButton from "@/components/primary-button";
-import { IconBrain, IconSearch, IconSprout } from "@/components/icons";
+import { IconBrain, IconSearch, IconSprout, IconSwooshGradient } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
 
 const FEATURES = [
@@ -27,20 +27,7 @@ export default function OnboardingPage() {
       <div className="flex flex-1 flex-col items-center justify-center gap-6xl py-4xl">
         <div className="flex flex-col items-center gap-3xl">
           <div className="flex flex-col items-center">
-            <svg
-              width="42"
-              height="31"
-              viewBox="38 0 46 34"
-              fill="none"
-              className="mb-0 text-gray-200"
-            >
-              <path
-                d="M40 13.9812C46.0292 14.6062 59.6204 18.75 59.6204 32C58.5985 18.9792 69.7372 2 82 2"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </svg>
+            <IconSwooshGradient className="h-8 w-9" />
             <p className="font-logo text-logo text-gray-900">Fomonda</p>
           </div>
           <div className="flex flex-col items-center gap-xs text-center text-label font-semibold text-gray-600">

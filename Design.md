@@ -46,6 +46,7 @@
 | Pink 300 | `#ffb3e0` | `--color-pink-300` | 강조 그라데이션 시작색, 브레인 이모지 아이콘 밑색 |
 | Pink 500 | `#f472b6` | `--color-pink-500` | 브레인 이모지 아이콘 메인 색 |
 | Pink 700 | `#be3a8a` | `--color-pink-700` | 브레인 이모지 아이콘 음영색 |
+| Purple 500 | `#8b7cf6` | `--color-purple-500` | 종목 검색 결과에서 검색어와 일치하는 부분 강조 |
 | Purple 700 | `#5b47d4` | `--color-purple-700` | 강조 그라데이션 끝색, "약한 근거" 이모지 아이콘 색 |
 | Green 500 | `#3dcb5a` | `--color-green-500` | 온보딩 "새싹" 이모지 아이콘 전용 색 — 노드 단위 아이콘 SVG를 직접 추출하고서야 발견됨(변수 바인딩이 아니라 하드코딩된 fill이라 초기 `get_variable_defs` 조사에서는 잡히지 않았음) |
 
@@ -122,9 +123,9 @@ letter-spacing은 전 스타일 `0` (트래킹 없음).
 | 카드 (기능 카드, 요약 카드) | 16px | `--radius-card` |
 | 질문 카드(Q1/Q2, 작은 카드) | 8px | `--radius-card-sm` |
 | 탭 필 / 뱃지 | 9999px | `--radius-badge` |
-| 검색/텍스트 입력창 | 8px | `--radius-input` |
+| 검색/텍스트 입력창 | 12px | `--radius-input` |
 
-> 입력창 radius는 온보딩/결과 두 화면에는 입력 컴포넌트가 없어 실측하지 못했습니다. 8px는 질문 카드(작은 카드) radius와 통일한 잠정값이며, 검색/이유 입력 화면을 Figma에서 확인하는 대로 실측값으로 교체합니다.
+> 입력창 radius는 직접 제작한 검색/이유입력 화면 캡처(픽셀 실측)로 12px 확정. 기존 8px 잠정값은 폐기.
 
 ---
 
@@ -206,7 +207,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 
 ```
 1. 브랜드 블록 (gap 36px)
-   - 로고: 장식 심볼 + "Fomonda" 워드마크(Paperlogy 700, 40px, Gray 900)
+   - 로고: 장식 심볼(스와시, `IconSwooshGradient` — 로딩 화면과 동일한 gradient-calm-accent 채움) + "Fomonda" 워드마크(Paperlogy 700, 40px, Gray 900)
    - 태그라인 2줄(body-lg, Gray 950, center):
      "내 투자 판단이 흔들린다면"
      "지금 메타인지를 가동하세요"
@@ -342,6 +343,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --color-pink-300: #ffb3e0;
   --color-pink-500: #f472b6;
   --color-pink-700: #be3a8a;
+  --color-purple-500: #8b7cf6;
   --color-purple-700: #5b47d4;
   --color-green-500: #3dcb5a; /* 새싹 이모지 일러스트 전용, 그 외 UI에는 사용 금지 */
 
@@ -387,7 +389,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-card: 16px;
   --radius-card-sm: 8px;
   --radius-badge: 9999px;
-  --radius-input: 8px;
+  --radius-input: 12px;
 
   /* Shadows */
   --shadow-card: rgba(35,31,58,0.04) 0px 0px 0px, rgba(35,31,58,0.06) 0px 2px 4px, rgba(35,31,58,0.08) 0px 8px 12px;
@@ -416,6 +418,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --color-pink-300: #ffb3e0;
   --color-pink-500: #f472b6;
   --color-pink-700: #be3a8a;
+  --color-purple-500: #8b7cf6;
   --color-purple-700: #5b47d4;
   --color-green-500: #3dcb5a;
 
@@ -445,7 +448,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-card: 16px;
   --radius-card-sm: 8px;
   --radius-badge: 9999px;
-  --radius-input: 8px;
+  --radius-input: 12px;
 }
 ```
 
@@ -465,10 +468,10 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 구현체: `components/holding-badge.tsx` (`HoldingBadge`, `avatarClasses`)
 
 ### 종목 검색
-- 헤드라인 2줄 + subtext, placeholder "종목명을 입력해주세요"
+- 헤드라인 2줄 + subtext, 입력창 왼쪽에 돋보기 아이콘(`IconSearchGlass`, Gray 600) + placeholder "종목명을 입력해주세요"
 - 검색어가 비어 있을 때: "최근 확인한 종목"(로컬 조회 이력, localStorage) + "추천 종목"(고정 4종목) 가로 스크롤 칩 — 칩은 `rounded-card bg-gray-100`
-- 검색어가 있을 때: 카드 없이 `border-b border-gray-100` 구분선만 있는 플랫 리스트, 종목명은 Purple 700 강조
-- 구현체: `lib/stocks/recent.ts`(최근), `lib/stocks/index.ts`의 `getRecommendedStocks()`(추천, 하드코딩)
+- 검색어가 있을 때: 카드 없이 `border-b border-gray-100` 구분선만 있는 플랫 리스트. 종목명 중 검색어와 일치하는 부분만 Purple 500(`#8b7cf6`) 강조, 나머지는 Gray 700
+- 구현체: `lib/stocks/recent.ts`(최근), `lib/stocks/index.ts`의 `getRecommendedStocks()`(추천, 하드코딩), `HighlightedName`(`app/search/page.tsx`)
 
 ### 보유 여부 선택
 - 헤드라인 "{종목명}는 / 지금 보유하고 있는 종목인가요?" + subtext
@@ -482,7 +485,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 
 ### 로딩 화면
 - 스피너 제거, 대신 로고 스와시를 gradient-calm-accent로 채운 버전(`IconSwooshGradient`) 노출
-- 헤드라인 "투자 메타인지를 가동 중이에요"(heading-sub) + subtext "판단 이유와 관련 뉴스를 비교하고 있어요"(label-sm, Gray 500)
+- 헤드라인 "투자 메타인지를 가동 중이에요"(heading-sub) + subtext "잠시만 기다려주세요"(label-sm, Gray 500)
 
 ### 내 종목 리스트
 - 상단 고정 헤더: `font-logo` "Fomonda" 워드마크(좌) + "의견 남기기" 버튼(우, `rounded-badge bg-gray-100`)

@@ -82,9 +82,7 @@ export default function ReasonPage() {
         <p className="text-heading-sub font-semibold text-gray-900">
           투자 메타인지를 가동 중이에요
         </p>
-        <p className="text-label-sm text-gray-500">
-          판단 이유와 관련 뉴스를 비교하고 있어요
-        </p>
+        <p className="text-label-sm text-gray-500">잠시만 기다려주세요</p>
       </div>
     );
   }
@@ -114,16 +112,16 @@ export default function ReasonPage() {
             </div>
           )}
 
-          <div className="flex flex-col gap-sm">
+          <div className="relative">
             <textarea
               value={reasonText}
               onChange={(e) => setReasonText(e.target.value.slice(0, MAX_LENGTH))}
               maxLength={MAX_LENGTH}
               rows={5}
               placeholder="매수/매도를 고민하고 있는 이유를 적어주세요"
-              className="resize-none rounded-input border border-gray-200 bg-white px-lg py-md text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+              className="w-full resize-none rounded-input border border-gray-200 bg-white px-lg py-md pb-xl text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
             />
-            <span className="self-end text-eyebrow text-gray-400">
+            <span className="pointer-events-none absolute bottom-sm right-lg text-eyebrow text-gray-400">
               {reasonText.length}/{MAX_LENGTH}
             </span>
           </div>
