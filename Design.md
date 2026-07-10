@@ -468,7 +468,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 구현체: `components/holding-badge.tsx` (`HoldingBadge`, `avatarClasses`)
 
 ### 종목 검색
-- 헤드라인 2줄 + subtext, 입력창 왼쪽에 돋보기 아이콘(`IconSearchGlass`, Gray 600) + placeholder "종목명을 입력해주세요"
+- 헤드라인 2줄 + subtext "한국거래소 상장 종목만 검색 가능해요"(KRX 상장종목정보 API 범위 안내), 입력창 왼쪽에 돋보기 아이콘(`IconSearchGlass`, Gray 600) + placeholder "종목명을 입력해주세요"
 - 검색어가 비어 있을 때: "최근 확인한 종목"(로컬 조회 이력, localStorage) + "추천 종목"(고정 4종목) 가로 스크롤 칩 — 칩은 `rounded-card bg-gray-100`
 - 검색어가 있을 때: 카드 없이 `border-b border-gray-100` 구분선만 있는 플랫 리스트. 종목명 중 검색어와 일치하는 부분만 Purple 500(`#8b7cf6`) 강조, 나머지는 Gray 700
 - 구현체: `lib/stocks/recent.ts`(최근), `lib/stocks/index.ts`의 `getRecommendedStocks()`(추천, 하드코딩), `HighlightedName`(`app/search/page.tsx`)

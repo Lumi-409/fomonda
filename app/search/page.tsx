@@ -83,7 +83,7 @@ export default function SearchPage() {
             <p>관심있는 종목을 입력해주세요</p>
           </div>
           <p className="mt-xs text-label-sm text-gray-600">
-            종목명이나 코드로 검색할 수 있어요
+            한국거래소 상장 종목만 검색 가능해요
           </p>
         </div>
 
