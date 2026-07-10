@@ -514,7 +514,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 
 ### 로딩 화면
 - 스피너 제거, 대신 로고 스와시를 gradient-calm-accent로 채운 버전(`IconSwooshGradient animated`) 노출
-- **로딩 모션:** 체크 벡터 라인을 따라 흰색 하이라이트가 좌→우로 1.4초 주기로 반복 이동하는 shimmer 효과(`animateTransform`으로 두 번째 오버레이 gradient를 이동). `animated` prop이 없으면(온보딩 사용처) 정적 상태 유지 — 온보딩 로고는 애니메이션 없음
+- **로딩 모션:** 체크 벡터 라인을 따라 흰색 하이라이트가 좌→우로 1.4초 주기로 반복 이동하는 shimmer 효과(`animateTransform`으로 두 번째 오버레이 gradient를 이동, `feGaussianBlur stdDeviation 1.6`로 흐릿하게 처리해 너무 쨍하지 않도록 함). `animated` prop이 없으면(온보딩 사용처) 정적 상태 유지 — 온보딩 로고는 애니메이션 없음
 - 헤드라인 "투자 메타인지를 가동 중이에요"(heading-sub) + subtext "잠시만 기다려주세요"(label-sm, Gray 500)
 
 ### 내 종목 리스트
