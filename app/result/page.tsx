@@ -78,52 +78,54 @@ export default function ResultPage() {
       </div>
 
       <div className="flex flex-col py-2xl">
-        <div className="flex flex-col gap-lg px-lg pb-lg">
-          <div
-            id="summary"
-            ref={(el) => {
-              sectionRefs.current.summary = el;
-            }}
-            className="flex flex-col gap-lg"
-          >
-            <div className="text-heading-sub font-semibold text-gray-950">
-              <p>
-                <span className="text-purple-700">{checkCard.weakPoints.length}개</span>의
-                약한 근거가 있어요
+        <div
+          id="summary"
+          ref={(el) => {
+            sectionRefs.current.summary = el;
+          }}
+          className="px-lg pb-lg"
+        >
+          <div className="text-heading-sub font-semibold text-gray-950">
+            <p>
+              <span className="text-purple-700">{checkCard.weakPoints.length}개</span>의
+              약한 근거가 있어요
+            </p>
+            <p>점검 결과를 확인해보세요</p>
+          </div>
+        </div>
+
+        <div className="sticky top-0 z-10 bg-white px-lg py-sm">
+          <div className="flex gap-sm overflow-x-auto">
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => handleTabClick(tab.id)}
+                className={`shrink-0 rounded-pill px-lg py-sm text-label font-semibold transition-colors ${
+                  activeTab === tab.id
+                    ? "bg-gray-800 text-gray-50"
+                    : "bg-gray-50 text-gray-600"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-lg px-lg pb-lg pt-lg">
+          <div className="flex w-full flex-col gap-lg rounded-card border border-gray-200 bg-gradient-calm-subtle p-xl">
+            <div className="flex items-center gap-xs">
+              <IconCheck />
+              <p className="bg-gradient-calm-accent bg-clip-text text-label font-semibold text-transparent">
+                판단을 요약했어요
               </p>
-              <p>점검 결과를 확인해보세요</p>
             </div>
-
-            <div className="sticky top-0 z-10 flex gap-sm overflow-x-auto bg-white py-sm">
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => handleTabClick(tab.id)}
-                  className={`shrink-0 rounded-pill px-lg py-sm text-label font-semibold transition-colors ${
-                    activeTab === tab.id
-                      ? "bg-gray-800 text-gray-50"
-                      : "bg-gray-50 text-gray-600"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex w-full flex-col gap-lg rounded-card border border-gray-200 bg-gradient-calm-subtle p-xl">
-              <div className="flex items-center gap-xs">
-                <IconCheck />
-                <p className="bg-gradient-calm-accent bg-clip-text text-label font-semibold text-transparent">
-                  판단을 요약했어요
-                </p>
-              </div>
-              <div className="flex flex-col gap-md">
-                <p className="text-label font-semibold text-gray-800">
-                  {checkCard.summaryHeadline}
-                </p>
-                <p className="text-label-sm font-medium text-gray-700">{checkCard.summary}</p>
-              </div>
+            <div className="flex flex-col gap-md">
+              <p className="text-label font-semibold text-gray-800">
+                {checkCard.summaryHeadline}
+              </p>
+              <p className="text-label-sm font-medium text-gray-700">{checkCard.summary}</p>
             </div>
           </div>
         </div>
@@ -134,7 +136,7 @@ export default function ResultPage() {
             ref={(el) => {
               sectionRefs.current["weak-points"] = el;
             }}
-            className="flex flex-col gap-2xl bg-white p-xl"
+            className="flex flex-col gap-2xl bg-white px-xl pt-xl pb-[28px]"
           >
             <div className="flex items-center gap-sm">
               <IconAlert className="h-5 w-auto shrink-0" />
@@ -154,7 +156,7 @@ export default function ResultPage() {
             ref={(el) => {
               sectionRefs.current.evidence = el;
             }}
-            className="flex flex-col gap-2xl bg-white p-xl"
+            className="flex flex-col gap-2xl bg-white px-xl py-[28px]"
           >
             <div className="flex flex-col gap-md">
               <div className="flex items-center gap-sm">
@@ -178,7 +180,7 @@ export default function ResultPage() {
             ref={(el) => {
               sectionRefs.current.questions = el;
             }}
-            className="flex flex-col gap-2xl bg-white p-xl"
+            className="flex flex-col gap-2xl bg-white px-xl py-[28px]"
           >
             <div className="flex flex-col gap-md">
               <div className="flex items-center gap-sm">
@@ -190,7 +192,7 @@ export default function ResultPage() {
                 객관적으로 한 번 더 점검해보세요
               </p>
             </div>
-            <div className="flex flex-col gap-sm">
+            <div className="flex flex-col gap-md">
               {checkCard.checkQuestions.map((question, index) => (
                 <QuestionRow key={index} index={index} question={question} />
               ))}
