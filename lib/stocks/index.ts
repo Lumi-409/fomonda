@@ -4,6 +4,11 @@ import { DUMMY_STOCK_LIST } from "./dummy-stock-list";
 // 추천 종목: 실시간 랭킹이 아니라 고정된 안내용 목록.
 const RECOMMENDED_CODES = ["005930", "000660", "035420", "035720"];
 
+export function stockMatches(stock: Stock, query: string): boolean {
+  const q = query.toLowerCase();
+  return stock.name.toLowerCase().includes(q) || stock.code.toLowerCase().includes(q);
+}
+
 export function getRecommendedStocks(): Stock[] {
   return DUMMY_STOCK_LIST.filter((stock) => RECOMMENDED_CODES.includes(stock.code));
 }
@@ -18,8 +23,6 @@ export async function searchStocks(query: string): Promise<Stock[]> {
     const data: { stocks: Stock[] } = await res.json();
     return data.stocks;
   } catch {
-    return DUMMY_STOCK_LIST.filter(
-      (stock) => stock.name.includes(trimmed) || stock.code.includes(trimmed)
-    );
+    return DUMMY_STOCK_LIST.filter((stock) => stockMatches(stock, trimmed));
   }
 }

@@ -10,7 +10,7 @@ import { addRecentStock, getRecentStocks } from "@/lib/stocks/recent";
 import { Stock } from "@/lib/types";
 
 function HighlightedName({ name, query }: { name: string; query: string }) {
-  const index = name.indexOf(query);
+  const index = name.toLowerCase().indexOf(query.toLowerCase());
   if (!query || index === -1) {
     return <span className="text-gray-700">{name}</span>;
   }
