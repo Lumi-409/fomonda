@@ -104,8 +104,8 @@ export default function ListPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col gap-2xl px-lg py-2xl">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-1 flex-col">
+      <div className="flex items-center justify-between px-lg py-lg">
         <p className="font-logo text-heading-sub text-gray-900">Fomonda</p>
 
         {isEditMode ? (
@@ -121,7 +121,7 @@ export default function ListPage() {
               type="button"
               disabled={selected.size === 0}
               onClick={() => setIsDeleteConfirmOpen(true)}
-              className={`rounded-badge px-md py-xs text-eyebrow font-semibold transition-colors ${
+              className={`rounded-badge px-sm py-xs text-eyebrow font-semibold transition-colors ${
                 selected.size > 0 ? "bg-gray-900 text-gray-50" : "bg-gray-100 text-gray-300"
               }`}
             >
@@ -133,7 +133,7 @@ export default function ListPage() {
             <button
               type="button"
               onClick={() => setIsFeedbackOpen(true)}
-              className="rounded-badge bg-gray-100 px-md py-xs text-eyebrow font-semibold text-gray-500 transition-colors hover:bg-gray-200"
+              className="rounded-badge border border-gray-200 bg-transparent px-sm py-xs text-eyebrow font-semibold text-gray-700 transition-colors hover:bg-gray-50"
             >
               의견 남기기
             </button>
@@ -141,7 +141,7 @@ export default function ListPage() {
               type="button"
               aria-label="설정"
               onClick={() => (isMenuOpen ? closeMenu() : setIsMenuOpen(true))}
-              className="flex items-center justify-center p-xs text-gray-900"
+              className="flex h-6 w-6 shrink-0 items-center justify-center text-gray-900"
             >
               <IconGear />
             </button>
@@ -196,28 +196,29 @@ export default function ListPage() {
         )}
       </div>
 
-      <div>
-        <h1 className="text-heading-sub font-semibold text-gray-950">내 종목 리스트</h1>
+      <div className="flex flex-1 flex-col gap-2xl px-lg pb-2xl">
+        <div>
+          <h1 className="text-heading-sub font-semibold text-gray-950">내 종목 리스트</h1>
 
-        <div className="mt-lg flex gap-xl border-b border-gray-100">
-          {(["보유", "관심"] as Tab[]).map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setTab(option)}
-              className={`-mb-px border-b-2 pb-sm text-label-m font-semibold transition-colors ${
-                tab === option
-                  ? "border-gray-900 text-gray-900"
-                  : "border-transparent text-gray-400"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
+          <div className="-mx-lg mt-lg flex border-b border-gray-100 bg-white px-lg">
+            {(["보유", "관심"] as Tab[]).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setTab(option)}
+                className={`-mb-px flex h-[54px] flex-1 items-center justify-center border-b-2 text-label font-semibold transition-colors ${
+                  tab === option
+                    ? "border-gray-950 text-gray-800"
+                    : "border-transparent text-gray-500"
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-col gap-sm">
+        <div className="flex flex-col gap-sm">
         {!isHydrated && (
           <p className="text-label-sm text-gray-400">불러오는 중이에요...</p>
         )}
@@ -233,7 +234,7 @@ export default function ListPage() {
                 ? toggleSelected(entry.stock.code)
                 : router.push(`/list/${entry.stock.code}`)
             }
-            className="flex items-center gap-md rounded-card border border-gray-200 bg-white px-lg py-md text-left transition-colors hover:bg-gray-50"
+            className="flex items-center gap-lg rounded-card border border-gray-200 bg-white py-[16px] pl-[16px] pr-[20px] text-left transition-colors hover:bg-gray-50"
           >
             {isEditMode && (
               <IconCheckboxState checked={selected.has(entry.stock.code)} className="h-5 w-5 shrink-0" />
@@ -249,7 +250,7 @@ export default function ListPage() {
               </span>
               <span className="text-eyebrow text-gray-400">{entry.stock.code}</span>
             </span>
-            <span className="shrink-0 rounded-badge bg-gray-100 px-md py-xs text-eyebrow text-gray-500">
+            <span className="shrink-0 rounded-badge bg-gray-100 px-sm py-xs text-eyebrow text-gray-500">
               {entry.judgments.length}회 점검
             </span>
           </button>
@@ -267,6 +268,7 @@ export default function ListPage() {
             종목 추가하기
           </button>
         )}
+        </div>
       </div>
 
       <FeedbackSheet isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
