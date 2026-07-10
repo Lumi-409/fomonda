@@ -33,7 +33,7 @@ export default function HoldingPage() {
             <p>{draft.stock.name}는</p>
             <p>지금 보유하고 있는 종목인가요?</p>
           </div>
-          <p className="mt-xs text-label-sm text-gray-600">
+          <p className="mt-sm text-label-sm text-gray-600">
             보유 중인 종목인지 관심 종목인지 알려주세요
           </p>
         </div>

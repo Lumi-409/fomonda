@@ -12,12 +12,12 @@ export default function StepTopBar({ step, totalSteps }: StepTopBarProps) {
   const router = useRouter();
 
   return (
-    <div className="flex h-[52px] w-full shrink-0 items-center gap-md px-2xl py-xl">
+    <div className="flex h-[52px] w-full shrink-0 items-center gap-lg px-lg py-lg">
       <button
         type="button"
         aria-label="뒤로가기"
         onClick={() => router.back()}
-        className="flex shrink-0 items-center justify-center p-xs text-gray-900"
+        className="flex h-6 w-6 shrink-0 items-center justify-center text-gray-900"
       >
         <IconBack className="h-4 w-4" />
       </button>
@@ -29,8 +29,10 @@ export default function StepTopBar({ step, totalSteps }: StepTopBarProps) {
         />
       </div>
 
-      <span className="shrink-0 text-eyebrow font-semibold text-gray-500">
-        {step}/{totalSteps}
+      <span className="flex shrink-0 items-center gap-[2px] text-eyebrow font-semibold text-gray-500">
+        <span className="text-gray-900">{step}</span>
+        <span>/</span>
+        <span>{totalSteps}</span>
       </span>
     </div>
   );

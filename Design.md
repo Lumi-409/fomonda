@@ -190,7 +190,18 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 | 타입 | 구성 | 사용처 |
 |------|------|--------|
 | none | 탑바 없음, 콘텐츠가 화면 최상단부터 시작 | 온보딩 |
-| close | 높이 52px, `px-24 py-20`, 우측 정렬 X 아이콘(16px) 단독 | 결과 |
+| step | 높이 52px, `padding 16px`(상하좌우), `gap 16px`. 뒤로가기 아이콘(24×24 컨테이너, 16×16 SVG) + 진행바(flex-1) + 진행 카운트 | 검색/보유여부/이유입력 (`StepTopBar`) |
+| back | 높이 52px, `padding 16px`(상하좌우). 뒤로가기 아이콘만 단독(24×24 컨테이너) | 종목별 판단 타임라인, 판단 기록 상세 (`BackTopBar`) |
+| close | 높이 52px, `padding 16px`(상하좌우), 우측 정렬 X 아이콘(24×24 컨테이너, 16×16 SVG) 단독 | 결과 |
+
+**뒤로가기 아이콘:** 모든 화면 공통으로 아래 SVG 사용(24×24 히트 영역, 16×16 실제 아이콘, Gray 900 `currentColor`).
+```svg
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path d="M8 1L1 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+```
+
+**진행 카운트(`step`/`totalSteps`):** 숫자와 슬래시를 각각 별도 span으로 분리해 `gap 2px`로 배치. 현재 페이지 숫자만 Gray 900, 나머지("/"와 totalSteps)는 Gray 500 — 예: `<span class="text-gray-900">1</span><span>/</span><span>4</span>`.
 
 ### 하단 버튼 영역
 
@@ -205,24 +216,26 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 
 ## 8. 화면 구조 — 온보딩
 
-배경은 흰색(Canvas), 탑바 없음.
+배경은 흰색(Canvas), 탑바 없음. 전체 섹션 좌우 padding 40px, 세 섹션(브랜드 블록/기능 카드/CTA 버튼) 사이 gap은 모두 48px로 균일.
 
 ```
-1. 브랜드 블록 (gap 36px)
-   - 로고: 장식 심볼(스와시, `IconSwooshGradient` — 로딩 화면과 동일한 gradient-calm-accent 채움) + "Fomonda" 워드마크(Paperlogy 700, 40px, Gray 900)
+1. 브랜드 블록 (gap 24px)
+   - 로고: 장식 심볼(스와시, `IconSwooshGradient`, 46×34px 고정 — 로딩 화면과 동일한 gradient-calm-accent 채움), 워드마크 대비 `translate-x: 24px` 오른쪽으로 이동해 "Fomonda"의 "on" 위에 오도록 배치 + "Fomonda" 워드마크(Paperlogy 700, 40px, Gray 900)
    - 태그라인 2줄(body-lg, Gray 950, center):
      "내 투자 판단이 흔들린다면"
      "지금 메타인지를 가동하세요"
 
-   ↕ 84px
+   ↕ 48px
 
-2. 기능 카드 (흰 배경, radius 16, shadow-card, padding 20, gap 16)
+2. 기능 카드 (흰 배경, radius 16, shadow-card, padding 20, gap 16, `w-full min-w-[292px]` — CTA 버튼과 동일한 폭)
    - 3개 항목, 각 아이콘(16px 커스텀 이모지 일러스트) + label-sm 텍스트(Gray 800)
      · 판단 뒤에 숨은 진짜 이유를 관찰해요
      · 흔들린 순간들이 나만의 인사이트가 돼요
      · 근거 있는 투자 판단의 힘을 키워요
 
-3. 하단 CTA — Primary 버튼 "시작하기" (full width)
+   ↕ 48px
+
+3. 하단 CTA — Primary 버튼 "시작하기" (`min-w-[292px]`, 기능 카드와 동일한 폭). 온보딩 화면에서만 하단 sticky 없이 일반 흐름(스크롤 시 같이 움직임)으로 배치 — 다른 화면의 하단 버튼 영역(sticky)과 다른 예외 케이스
 ```
 
 **Ambient Glow (구현 단계 추가 효과):** 온보딩과 "메타인지 가동 중" 로딩 화면 배경에, 크게 blur 처리된 원형 2개(Pink 300 opacity 40%, Purple 700 opacity 20%, `blur-3xl`)가 8~12초 주기로 서서히 위치·크기를 오가며 루프한다(`animate-drift-a` 10s, `animate-drift-b` 12s, 둘 다 ease-in-out). 벽에 비친 조명이 천천히 움직이는 느낌으로, 콘텐츠 위계를 해치지 않는 선에서만 사용한다. 구현체: `components/ambient-glow.tsx`.
@@ -472,13 +485,21 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 구현체: `components/holding-badge.tsx` (`HoldingBadge`, `avatarClasses`)
 
 ### 종목 검색
-- 헤드라인 2줄 + subtext "한국거래소 상장 종목만 검색 가능해요"(KRX 상장종목정보 API 범위 안내), 입력창 왼쪽에 돋보기 아이콘(`IconSearchGlass`, Gray 600) + placeholder "종목명을 입력해주세요"
-- 검색어가 비어 있을 때: "최근 확인한 종목"(로컬 조회 이력, localStorage) + "추천 종목"(고정 4종목) 가로 스크롤 칩 — 칩은 `rounded-card bg-gray-100`
+- 헤드라인 2줄 + subtext "한국거래소 상장 종목만 검색 가능해요"(KRX 상장종목정보 API 범위 안내), 헤드라인↔subtext gap 8px
+- 헤드라인↔input gap 32px, input↔최근/추천 종목 섹션 gap 32px
+- 검색 input: flex 행 구조(아이콘+텍스트), radius 16px, padding top/bottom 16px·left 16px·right 20px, 아이콘-텍스트 gap 8px, 폰트 크기 16px(`text-label`, placeholder 포함), 보더 Gray 200(focus 시 Gray 800) — radius/폰트 크기는 focus 상태에서도 동일하게 유지
+- 검색 아이콘(`IconSearchGlass`, Gray 600, 20×20 컨테이너):
+  ```svg
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <path d="M17.5 17.5L13.8833 13.8833M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  ```
+- 검색어가 비어 있을 때: "최근 확인한 종목"(로컬 조회 이력, localStorage) + "추천 종목"(고정 4종목) 가로 스크롤 칩 — 칩은 `rounded-card bg-gray-100`. 섹션 라벨은 Gray 500, 라벨↔칩 행 gap 16px
 - 검색어가 있을 때: 카드 없이 `border-b border-gray-100` 구분선만 있는 플랫 리스트. 종목명 중 검색어와 일치하는 부분만 Purple 500(`#8b7cf6`) 강조, 나머지는 Gray 700
 - 구현체: `lib/stocks/recent.ts`(최근), `lib/stocks/index.ts`의 `getRecommendedStocks()`(추천, 하드코딩), `HighlightedName`(`app/search/page.tsx`)
 
 ### 보유 여부 선택
-- 헤드라인 "{종목명}는 / 지금 보유하고 있는 종목인가요?" + subtext
+- 헤드라인 "{종목명}는 / 지금 보유하고 있는 종목인가요?" + subtext, 헤드라인↔subtext gap 8px
 - 버튼 2개가 좌우가 아니라 세로로 쌓임, `rounded-card bg-gray-100`(보더 없음), 각각 풀와이드
 
 ### 판단 이유 입력

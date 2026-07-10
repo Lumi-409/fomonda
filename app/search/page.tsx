@@ -30,7 +30,7 @@ function StockChip({ stock, onClick }: { stock: Stock; onClick: () => void }) {
       onClick={onClick}
       className="flex shrink-0 items-center gap-sm rounded-card bg-gray-100 px-lg py-md text-left transition-colors hover:bg-gray-200"
     >
-      <span className="whitespace-nowrap text-label-sm font-semibold text-gray-900">
+      <span className="whitespace-nowrap text-label-sm font-semibold text-gray-700">
         {stock.name}
       </span>
       <span className="whitespace-nowrap text-eyebrow text-gray-400">{stock.code}</span>
@@ -76,25 +76,25 @@ export default function SearchPage() {
   return (
     <div className="flex flex-1 flex-col">
       <StepTopBar step={1} totalSteps={4} />
-      <div className="flex flex-1 flex-col gap-2xl px-lg py-2xl">
+      <div className="flex flex-1 flex-col gap-[32px] px-lg py-2xl">
         <div>
           <div className="text-heading-sub font-semibold text-gray-950">
             <p>매수/매도를 고민 중이거나</p>
             <p>관심있는 종목을 입력해주세요</p>
           </div>
-          <p className="mt-xs text-label-sm text-gray-600">
+          <p className="mt-sm text-label-sm text-gray-600">
             한국거래소 상장 종목만 검색 가능해요
           </p>
         </div>
 
-        <div className="relative">
-          <IconSearchGlass className="pointer-events-none absolute left-lg top-1/2 h-4 w-4 -translate-y-1/2 text-gray-600" />
+        <div className="flex w-full items-center gap-sm rounded-[16px] border border-gray-200 bg-white py-[16px] pl-[16px] pr-[20px] focus-within:border-gray-800">
+          <IconSearchGlass className="h-5 w-5 shrink-0 text-gray-600" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="종목명을 입력해주세요"
-            className="w-full rounded-input border border-gray-200 bg-white py-md pl-[40px] pr-lg text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+            className="flex-1 border-none bg-transparent text-label text-gray-900 outline-none placeholder:text-gray-400"
           />
         </div>
 
@@ -120,8 +120,8 @@ export default function SearchPage() {
         ) : (
           <div className="flex flex-col gap-2xl">
             {recent.length > 0 && (
-              <div className="flex flex-col gap-sm">
-                <span className="text-label-sm font-semibold text-gray-900">
+              <div className="flex flex-col gap-lg">
+                <span className="text-label-sm font-semibold text-gray-500">
                   최근 확인한 종목
                 </span>
                 <div className="flex gap-sm overflow-x-auto">
@@ -136,8 +136,8 @@ export default function SearchPage() {
               </div>
             )}
 
-            <div className="flex flex-col gap-sm">
-              <span className="text-label-sm font-semibold text-gray-900">추천 종목</span>
+            <div className="flex flex-col gap-lg">
+              <span className="text-label-sm font-semibold text-gray-500">추천 종목</span>
               <div className="flex gap-sm overflow-x-auto">
                 {recommended.map((stock) => (
                   <StockChip key={stock.code} stock={stock} onClick={() => handleSelect(stock)} />

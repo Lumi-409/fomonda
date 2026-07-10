@@ -173,11 +173,16 @@ export function IconCheck({ className }: IconProps) {
   );
 }
 
-export function IconSearchGlass({ className = "h-4 w-4" }: IconProps) {
+export function IconSearchGlass({ className = "h-5 w-5" }: IconProps) {
   return (
-    <svg viewBox="0 0 16 16" fill="none" className={className}>
-      <circle cx="7" cy="7" r="5.25" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M14 14L11 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <svg viewBox="0 0 20 20" fill="none" className={className}>
+      <path
+        d="M17.5 17.5L13.8833 13.8833M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z"
+        stroke="currentColor"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -186,9 +191,9 @@ export function IconBack({ className = "h-4 w-4" }: IconProps) {
   return (
     <svg viewBox="0 0 16 16" fill="none" className={className}>
       <path
-        d="M10 2.5L4.5 8L10 13.5"
+        d="M8 1L1 8L8 15M1 8H15"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

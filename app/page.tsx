@@ -24,10 +24,10 @@ export default function OnboardingPage() {
   return (
     <div className="relative isolate flex flex-1 flex-col overflow-hidden bg-white">
       <AmbientGlow />
-      <div className="flex flex-1 flex-col items-center justify-center gap-6xl py-4xl">
-        <div className="flex flex-col items-center gap-3xl">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4xl px-[40px] py-4xl">
+        <div className="flex flex-col items-center gap-2xl">
           <div className="flex flex-col items-center">
-            <IconSwooshGradient className="h-8 w-9" />
+            <IconSwooshGradient className="h-[34px] w-[46px] translate-x-[24px]" />
             <p className="font-logo text-logo text-gray-900">Fomonda</p>
           </div>
           <div className="flex flex-col items-center gap-xs text-center text-label font-semibold text-gray-600">
@@ -36,7 +36,7 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        <div className="flex w-fit flex-col items-start gap-lg rounded-card bg-white p-xl shadow-card">
+        <div className="flex w-full min-w-[292px] flex-col items-start gap-lg rounded-card bg-white p-xl shadow-card">
           {FEATURES.map((feature) => (
             <div key={feature.text} className="flex items-center gap-lg">
               <feature.Icon className="shrink-0" />
@@ -46,10 +46,10 @@ export default function OnboardingPage() {
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="sticky bottom-0 flex w-full flex-col bg-white px-lg pb-2xl pt-lg">
-        <PrimaryButton onClick={handleStart}>시작하기</PrimaryButton>
+        <PrimaryButton onClick={handleStart} className="min-w-[292px]">
+          시작하기
+        </PrimaryButton>
       </div>
     </div>
   );

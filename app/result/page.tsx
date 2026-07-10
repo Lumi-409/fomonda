@@ -61,12 +61,12 @@ export default function ResultPage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex h-[52px] w-full shrink-0 items-center justify-end px-2xl py-xl">
+      <div className="flex h-[52px] w-full shrink-0 items-center justify-end px-lg py-lg">
         <button
           type="button"
           aria-label="닫기"
           onClick={() => router.push("/list")}
-          className="flex items-center justify-center p-xs text-gray-900"
+          className="flex h-6 w-6 shrink-0 items-center justify-center text-gray-900"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
