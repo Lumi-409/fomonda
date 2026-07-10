@@ -20,6 +20,7 @@ interface AppContextValue {
   setHolding: (holding: boolean) => void;
   recordJudgment: (reason: string, checkCard: CheckCard) => void;
   getEntry: (code: string) => StockEntry | undefined;
+  deleteEntries: (codes: string[]) => Promise<void>;
 }
 
 const initialDraft: DraftState = {
@@ -108,6 +109,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
       },
       getEntry: (code) => entries.find((entry) => entry.stock.code === code),
+      deleteEntries: async (codes) => {
+        if (!sessionId || codes.length === 0) return;
+
+        const results = await Promise.allSettled(
+          codes.map((code) =>
+            fetch("/api/judgments", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ sessionId, stockCode: code }),
+            }).then((res) => {
+              if (!res.ok) throw new Error(`삭제 실패 (status: ${res.status})`);
+            })
+          )
+        );
+
+        const succeededCodes = codes.filter((_, i) => results[i].status === "fulfilled");
+        if (succeededCodes.length > 0) {
+          const succeeded = new Set(succeededCodes);
+          setEntries((prev) => prev.filter((entry) => !succeeded.has(entry.stock.code)));
+        }
+
+        const failedCount = results.filter((r) => r.status === "rejected").length;
+        if (failedCount > 0) {
+          throw new Error(`${failedCount}개 종목 삭제에 실패했어요.`);
+        }
+      },
     }),
     [entries, draft, isHydrated, sessionId]
   );

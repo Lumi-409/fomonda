@@ -57,7 +57,8 @@ const config: Config = {
         button: "16px",
         card: "16px",
         "card-sm": "8px",
-        badge: "9999px",
+        badge: "8px",
+        pill: "9999px",
         input: "12px",
       },
       boxShadow: {

@@ -73,6 +73,21 @@ export async function insertJudgment(args: InsertJudgmentArgs): Promise<void> {
   }
 }
 
+export async function deleteEntry(sessionId: string, stockCode: string): Promise<void> {
+  const url = `${process.env.SUPABASE_URL}/rest/v1/judgments?session_id=eq.${encodeURIComponent(
+    sessionId
+  )}&stock_code=eq.${encodeURIComponent(stockCode)}`;
+
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: { ...supabaseHeaders(), Prefer: "return=minimal" },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Supabase 삭제 실패 (status: ${res.status})`);
+  }
+}
+
 function groupRowsByStock(rows: JudgmentRow[]): StockEntry[] {
   const entries = new Map<string, StockEntry>();
 

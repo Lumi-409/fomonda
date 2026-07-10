@@ -36,7 +36,7 @@ export default function StockTimelinePage() {
       <div className="flex flex-1 flex-col gap-2xl px-lg py-2xl">
         <div className="flex items-center gap-md">
           <span
-            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-badge text-label-lg font-semibold ${avatarClasses(entry.holding)}`}
+            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-label-lg font-semibold ${avatarClasses(entry.holding)}`}
           >
             {entry.stock.name.slice(0, 1)}
           </span>

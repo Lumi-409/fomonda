@@ -195,3 +195,69 @@ export function IconBack({ className = "h-4 w-4" }: IconProps) {
     </svg>
   );
 }
+
+export function IconGear({ className = "h-4 w-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className={className}>
+      <path
+        d="M8.28 2.5h3.44l.5 2.02c.5.19.97.45 1.4.76l1.98-.62 1.72 2.98-1.55 1.4c.05.26.08.53.08.8s-.03.54-.08.8l1.55 1.4-1.72 2.98-1.98-.62c-.43.31-.9.57-1.4.76l-.5 2.02H8.28l-.5-2.02a6.2 6.2 0 0 1-1.4-.76l-1.98.62-1.72-2.98 1.55-1.4A5.6 5.6 0 0 1 4.15 10c0-.27.03-.54.08-.8l-1.55-1.4L4.4 4.82l1.98.62c.43-.31.9-.57 1.4-.76l.5-2.02Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="10" r="2.4" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
+}
+
+export function IconTrash({ className = "h-4 w-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" className={className}>
+      <path
+        d="M2.5 4.5h11M6.5 2.5h3a1 1 0 0 1 1 1v1h-5v-1a1 1 0 0 1 1-1Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.5 4.5 4.1 13a1 1 0 0 0 1 .9h5.8a1 1 0 0 0 1-.9l.6-8.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6.5 7v4.5M9.5 7v4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function IconPlus({ className = "h-3 w-3" }: IconProps) {
+  return (
+    <svg viewBox="0 0 12 12" fill="none" className={className}>
+      <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function IconCheckboxState({ checked, className = "h-5 w-5" }: IconProps & { checked: boolean }) {
+  if (checked) {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" className={className}>
+        <rect x="0.5" y="0.5" width="19" height="19" rx="5.5" fill="#231F3A" stroke="#231F3A" />
+        <path
+          d="M5.5 10.2 8.3 13l6-6.4"
+          stroke="#F9F9FA"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className={className}>
+      <rect x="0.5" y="0.5" width="19" height="19" rx="5.5" fill="#F9F9FA" stroke="#E3E2E9" />
+    </svg>
+  );
+}

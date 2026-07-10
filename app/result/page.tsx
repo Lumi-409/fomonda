@@ -97,7 +97,7 @@ export default function ResultPage() {
                   key={tab.id}
                   type="button"
                   onClick={() => handleTabClick(tab.id)}
-                  className={`shrink-0 rounded-badge px-lg py-sm text-label font-semibold transition-colors ${
+                  className={`shrink-0 rounded-pill px-lg py-sm text-label font-semibold transition-colors ${
                     activeTab === tab.id
                       ? "bg-gray-800 text-gray-50"
                       : "bg-gray-50 text-gray-600"

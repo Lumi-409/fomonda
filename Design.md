@@ -122,10 +122,12 @@ letter-spacing은 전 스타일 `0` (트래킹 없음).
 | 버튼 (Primary/Ghost) | 16px | `--radius-button` |
 | 카드 (기능 카드, 요약 카드) | 16px | `--radius-card` |
 | 질문 카드(Q1/Q2, 작은 카드) | 8px | `--radius-card-sm` |
-| 탭 필 / 뱃지 | 9999px | `--radius-badge` |
+| 뱃지 (보유/관심, N회 점검, 종목명 뱃지 등) | 8px | `--radius-badge` |
+| 탭 필 (결과 화면 4개 탭) | 9999px | `--radius-pill` |
 | 검색/텍스트 입력창 | 12px | `--radius-input` |
 
 > 입력창 radius는 직접 제작한 검색/이유입력 화면 캡처(픽셀 실측)로 12px 확정. 기존 8px 잠정값은 폐기.
+> 뱃지는 원래 `--radius-badge: 9999px`(완전 pill) 하나로 통일돼 있었으나, 결과 화면 탭 필만 pill로 남기고 나머지 뱃지류는 8px로 분리했다. 종목 아바타(원형 이니셜)는 뱃지가 아니라 Tailwind 기본 `rounded-full`을 사용해 `--radius-badge` 값과 무관하게 항상 완전한 원을 유지한다.
 
 ---
 
@@ -150,7 +152,7 @@ letter-spacing은 전 스타일 `0` (트래킹 없음).
 |------|------|--------|-----------|--------|
 | Primary | `--gradient-btn` | Gray 50 (`#f9f9fa`) | radius 16, `px-20 py-16`, `label`(16px) | 온보딩 "시작하기", 결과 "리스트 확인" |
 | Secondary(서브 버튼) | Gray 100 (`#f3f2f8`) | Gray 700 (`#585869`) | radius 16, `px-20 py-16`, `label`(16px) — Primary와 크기/radius 동일, 배경만 다름 | 결과 "다시 점검하기" (Primary와 짝을 이루는 하단 2-버튼 조합 전용) |
-| Ghost | 배경 없음(투명) | Gray 700 (`#585869`) | radius 8, 1px 보더 Gray 200(`#e3e2e9`), `px-16 py-8`, `label`(16px) | 리스트 "종목 추가하기" |
+| Ghost | 배경 없음(투명) | Gray 700 (`#585869`) | radius 8, 1px 보더 Gray 200(`#e3e2e9`), `px-16 py-8`, `label`(16px) | 현재 미사용 — 리스트 "종목 추가하기"는 §13에서 아이콘+텍스트 미니멀 스타일로 교체됨. `components/primary-button.tsx`의 `ghost` variant 자체는 유지 |
 
 > **Secondary vs Ghost 구분 주의:** 둘 다 회색조 서브 버튼이지만 서로 다른 Figma 컴포넌트다. Secondary는 결과 화면 하단 2-버튼(Primary+Secondary) 조합에서만 쓰이고 Primary와 radius/padding을 공유한다. Ghost는 완전히 별도 컴포넌트로, 단독으로 쓰이며 투명 배경+보더+radius 8의 작은 아웃라인 버튼이다. 처음에 이 둘을 혼동해 결과 화면에 Ghost를 잘못 적용했던 적이 있다.
 
@@ -388,7 +390,8 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-button: 16px;
   --radius-card: 16px;
   --radius-card-sm: 8px;
-  --radius-badge: 9999px;
+  --radius-badge: 8px;
+  --radius-pill: 9999px;
   --radius-input: 12px;
 
   /* Shadows */
@@ -447,7 +450,8 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-button: 16px;
   --radius-card: 16px;
   --radius-card-sm: 8px;
-  --radius-badge: 9999px;
+  --radius-badge: 8px;
+  --radius-pill: 9999px;
   --radius-input: 12px;
 }
 ```
@@ -488,11 +492,25 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
 - 헤드라인 "투자 메타인지를 가동 중이에요"(heading-sub) + subtext "잠시만 기다려주세요"(label-sm, Gray 500)
 
 ### 내 종목 리스트
-- 상단 고정 헤더: `font-logo` "Fomonda" 워드마크(좌) + "의견 남기기" 버튼(우, `rounded-badge bg-gray-100`)
+- 상단 고정 헤더: `font-logo` "Fomonda" 워드마크(좌) + "의견 남기기" 버튼 + 톱니바퀴 아이콘(`IconGear`, Gray 900)(우)
 - 탭: 기존 필(pill) 스타일 → 밑줄 스타일(`border-b-2`, 활성 Gray 900 / 비활성 Gray 400, 공유 `border-gray-100` 베이스라인)
-- 종목 아바타: 보유/관심 컬러 코드 적용
+- 종목 아바타: 보유/관심 컬러 코드 적용, `rounded-full`(뱃지 radius 토큰과 무관하게 항상 원형)
 - 우측 텍스트: "판단 기록 N건" → "N회 점검" 뱃지(`rounded-badge bg-gray-100`)
-- "종목 추가하기" Ghost 버튼은 유지
+- "종목 추가하기": 기존 Ghost 아웃라인 버튼 → 보더/배경 없이 `+` 아이콘(Gray 100 원형 배경 + Gray 400 획) + "종목 추가하기" 텍스트(Gray 500), 가운데 정렬로 축소된 미니멀 스타일로 교체
+- 구현체: `app/list/page.tsx`
+
+**설정(톱니바퀴) 드롭다운 메뉴**
+- 아이콘 탭 시 우측 정렬로 아래에 팝업(`shadow-modal`, `rounded-card`, 흰 배경) 노출, 바깥 탭하면 닫힘
+- 1단계 메뉴: "종목 편집" / "정렬" 두 항목만(Gray 900, `label-m`)
+- "정렬" 탭 시 같은 팝업 안에서 2단계로 전환: 최신순 / 이름순 / 점검 횟수순 3개 옵션, 현재 선택된 옵션만 Gray 900(나머지는 Gray 400)으로 표시. 기본값은 최신순(가장 최근 점검한 종목이 위)
+- "종목 편집" 탭 시 팝업 닫히고 리스트가 편집 모드로 전환
+
+**종목 편집 모드**
+- 상단 헤더 우측이 "의견 남기기 + 톱니바퀴"에서 "취소" + "삭제" 버튼으로 교체
+- "삭제" 버튼은 기본 비활성 상태(`bg-gray-100 text-gray-300`)이며, 1개 이상 선택 시 활성 상태(`bg-gray-900 text-gray-50`)로 전환
+- 각 종목 카드 좌측에 체크박스(`IconCheckboxState`, 8px 라운드 사각형 — 선택 시 Gray 900 배경 + 체크마크, 미선택 시 Gray 50 배경 + Gray 200 보더)가 나타나고, 카드 탭 시 상세 이동 대신 체크 토글
+- "삭제" 탭 시 확인 팝업(`ConfirmDialog`, 중앙 모달) 노출 — "N개 종목을 삭제할까요?" + "판단 타임라인이 모두 삭제되며 되돌릴 수 없어요" + 취소/삭제 버튼. 삭제 확정 시 선택된 종목의 판단 타임라인 전체가 Supabase에서 영구 삭제됨
+- 구현체: `components/confirm-dialog.tsx`, `lib/db/judgments.ts`의 `deleteEntry`, `app/api/judgments/route.ts`의 `DELETE`, `lib/context/app-context.tsx`의 `deleteEntries`
 
 ### 종목별 판단 타임라인
 - 헤더: 아바타(컬러코드) + 종목명 + "코드 · N회 점검" + 우측 `HoldingBadge`
