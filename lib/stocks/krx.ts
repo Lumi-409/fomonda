@@ -33,7 +33,12 @@ async function requestKrx(params: Record<string, string>): Promise<KrxItem[]> {
   }
 
   const search = new URLSearchParams({ serviceKey, ...params });
-  const res = await fetch(`${ENDPOINT}?${search.toString()}`, { cache: "no-store" });
+  // KRX 데이터는 영업일 기준 하루 1회만 갱신되므로 Next.js Data Cache로 1시간 캐싱한다.
+  // 서버리스 인스턴스마다 새로 뜨는 모듈 스코프 캐시(cachedStocks)와 달리, 이 캐시는
+  // Vercel 배포 전체에서 공유되어 매 요청마다 KRX를 다시 호출하는 지연을 막아준다.
+  const res = await fetch(`${ENDPOINT}?${search.toString()}`, {
+    next: { revalidate: 3600 },
+  });
   if (!res.ok) {
     throw new Error(`KRX 상장종목정보 API 요청 실패 (status: ${res.status})`);
   }

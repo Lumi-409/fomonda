@@ -58,11 +58,14 @@ export default function SearchPage() {
       return;
     }
     let active = true;
-    searchStocks(query).then((stocks) => {
-      if (active) setResults(stocks);
-    });
+    const timer = setTimeout(() => {
+      searchStocks(query).then((stocks) => {
+        if (active) setResults(stocks);
+      });
+    }, 250);
     return () => {
       active = false;
+      clearTimeout(timer);
     };
   }, [query]);
 
