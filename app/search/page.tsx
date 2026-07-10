@@ -88,7 +88,7 @@ export default function SearchPage() {
             </p>
           </div>
 
-          <div className="flex w-full items-center gap-sm rounded-[16px] border border-gray-200 bg-white py-[16px] pl-[16px] pr-[20px] focus-within:border-gray-800">
+          <div className="flex w-full items-center gap-sm rounded-input border border-gray-200 bg-white py-[16px] pl-[16px] pr-[20px] focus-within:border-gray-800">
             <IconSearchGlass className="h-5 w-5 shrink-0 text-gray-600" />
             <input
               type="text"

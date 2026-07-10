@@ -73,16 +73,16 @@ export default function FeedbackSheet({ isOpen, onClose }: FeedbackSheetProps) {
           </p>
         </div>
 
-        <div className="relative">
+        <div className="flex w-full flex-col rounded-input border border-gray-200 bg-white px-[20px] py-[16px] focus-within:border-gray-800">
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value.slice(0, MAX_LENGTH))}
             maxLength={MAX_LENGTH}
             rows={4}
             placeholder="내용을 입력해주세요"
-            className="w-full resize-none rounded-input border border-gray-200 bg-white px-lg py-md pb-xl text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+            className="w-full flex-1 resize-none border-none bg-transparent text-label text-gray-900 outline-none placeholder:text-gray-400"
           />
-          <span className="pointer-events-none absolute bottom-sm right-lg text-eyebrow text-gray-400">
+          <span className="self-end text-eyebrow text-gray-400">
             {content.length}/{MAX_LENGTH}
           </span>
         </div>

@@ -5,8 +5,12 @@ import { useId } from "react";
 type IconProps = { className?: string };
 
 // 로고 스와시(node 241:1523) 재사용 — gradient-calm-accent로 채운 로딩 화면용 버전
-export function IconSwooshGradient({ className = "h-8 w-9" }: IconProps) {
+export function IconSwooshGradient({
+  className = "h-8 w-9",
+  animated = false,
+}: IconProps & { animated?: boolean }) {
   const gradientId = useId();
+  const shimmerId = useId();
   return (
     <svg viewBox="38 0 46 34" fill="none" className={className}>
       <path
@@ -15,11 +19,41 @@ export function IconSwooshGradient({ className = "h-8 w-9" }: IconProps) {
         strokeWidth="4"
         strokeLinecap="round"
       />
+      {animated && (
+        <path
+          d="M40 13.9812C46.0292 14.6062 59.6204 18.75 59.6204 32C58.5985 18.9792 69.7372 2 82 2"
+          stroke={`url(#${shimmerId})`}
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+      )}
       <defs>
         <linearGradient id={gradientId} x1="82" y1="17" x2="40" y2="17" gradientUnits="userSpaceOnUse">
           <stop stopColor="#FFAFE1" />
           <stop offset="1" stopColor="#6E53FF" />
         </linearGradient>
+        {animated && (
+          <linearGradient
+            id={shimmerId}
+            x1="28"
+            y1="17"
+            x2="48"
+            y2="17"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stopColor="#FFFFFF" stopOpacity="0" />
+            <stop offset="0.5" stopColor="#FFFFFF" stopOpacity="0.95" />
+            <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="translate"
+              from="0 0"
+              to="54 0"
+              dur="1.4s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+        )}
       </defs>
     </svg>
   );

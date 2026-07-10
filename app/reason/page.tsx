@@ -78,7 +78,7 @@ export default function ReasonPage() {
     return (
       <div className="relative isolate flex flex-1 flex-col items-center justify-center gap-md overflow-hidden bg-white text-center">
         <AmbientGlow />
-        <IconSwooshGradient className="mb-sm h-8 w-9" />
+        <IconSwooshGradient className="mb-sm h-8 w-9" animated />
         <p className="text-heading-sub font-semibold text-gray-900">
           투자 메타인지를 가동 중이에요
         </p>
@@ -91,15 +91,15 @@ export default function ReasonPage() {
     <div className="flex flex-1 flex-col">
       <StepTopBar step={3} totalSteps={4} />
       <div className="flex flex-1 flex-col justify-between gap-3xl px-lg py-2xl">
-        <div className="flex flex-col gap-2xl">
+        <div className="flex flex-col gap-[32px]">
           <div>
             <div className="text-heading-sub font-semibold text-gray-950">
-              <p>이 종목을 매수/매도 판단의</p>
+              <p>이 종목의 매수/매도를 고민하는</p>
               <p>이유를 작성해주세요</p>
             </div>
-            <div className="mt-sm flex gap-sm">
+            <div className="mt-md flex gap-sm">
               <HoldingBadge holding={draft.holding} />
-              <span className="rounded-badge bg-gray-100 px-md py-xs text-eyebrow font-semibold text-gray-700">
+              <span className="rounded-badge bg-gray-100 px-sm py-xs text-label-sm font-semibold text-gray-700">
                 {draft.stock.name}
               </span>
             </div>
@@ -112,21 +112,21 @@ export default function ReasonPage() {
             </div>
           )}
 
-          <div className="relative">
+          <div className="flex w-full flex-col rounded-input border border-gray-200 bg-white px-[20px] py-[16px] focus-within:border-gray-800">
             <textarea
               value={reasonText}
               onChange={(e) => setReasonText(e.target.value.slice(0, MAX_LENGTH))}
               maxLength={MAX_LENGTH}
               rows={5}
               placeholder="매수/매도를 고민하고 있는 이유를 적어주세요"
-              className="w-full resize-none rounded-input border border-gray-200 bg-white px-lg py-md pb-xl text-label-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-gray-800"
+              className="w-full flex-1 resize-none border-none bg-transparent text-label text-gray-900 outline-none placeholder:text-gray-400"
             />
-            <span className="pointer-events-none absolute bottom-sm right-lg text-eyebrow text-gray-400">
+            <span className="self-end text-eyebrow text-gray-400">
               {reasonText.length}/{MAX_LENGTH}
             </span>
           </div>
 
-          <div className="flex flex-col gap-sm">
+          <div className="flex flex-col gap-lg">
             <span className="text-label-sm font-semibold text-gray-900">
               혹시 이런 이유인가요?
             </span>
@@ -136,7 +136,7 @@ export default function ReasonPage() {
                   key={example}
                   type="button"
                   onClick={() => setReasonText(example.slice(0, MAX_LENGTH))}
-                  className="rounded-card border border-gray-200 bg-white px-lg py-md text-left text-label-sm text-gray-600 transition-colors hover:bg-gray-50"
+                  className="rounded-card bg-gray-100 px-[20px] py-[16px] text-left text-label font-semibold text-gray-600 transition-colors hover:bg-gray-200"
                 >
                   {example}
                 </button>

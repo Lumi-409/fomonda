@@ -124,9 +124,9 @@ letter-spacing은 전 스타일 `0` (트래킹 없음).
 | 질문 카드(Q1/Q2, 작은 카드) | 8px | `--radius-card-sm` |
 | 뱃지 (보유/관심, N회 점검, 종목명 뱃지 등) | 8px | `--radius-badge` |
 | 탭 필 (결과 화면 4개 탭) | 9999px | `--radius-pill` |
-| 검색/텍스트 입력창 | 12px | `--radius-input` |
+| 검색/텍스트 입력창 | 16px | `--radius-input` |
 
-> 입력창 radius는 직접 제작한 검색/이유입력 화면 캡처(픽셀 실측)로 12px 확정. 기존 8px 잠정값은 폐기.
+> 입력창 radius는 직접 제작한 검색/이유입력 화면 캡처(픽셀 실측)로 12px까지 갔다가, 화면별 정밀 조정 단계에서 검색/이유입력/피드백 입력창 모두 16px로 재확정.
 > 뱃지는 원래 `--radius-badge: 9999px`(완전 pill) 하나로 통일돼 있었으나, 결과 화면 탭 필만 pill로 남기고 나머지 뱃지류는 8px로 분리했다. 종목 아바타(원형 이니셜)는 뱃지가 아니라 Tailwind 기본 `rounded-full`을 사용해 `--radius-badge` 값과 무관하게 항상 완전한 원을 유지한다.
 
 ---
@@ -405,7 +405,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-card-sm: 8px;
   --radius-badge: 8px;
   --radius-pill: 9999px;
-  --radius-input: 12px;
+  --radius-input: 16px;
 
   /* Shadows */
   --shadow-card: rgba(35,31,58,0.04) 0px 0px 0px, rgba(35,31,58,0.06) 0px 2px 4px, rgba(35,31,58,0.08) 0px 8px 12px;
@@ -465,7 +465,7 @@ Primary와 달리 배경 채움이 없는 아웃라인 버튼이며, radius(8px)
   --radius-card-sm: 8px;
   --radius-badge: 8px;
   --radius-pill: 9999px;
-  --radius-input: 12px;
+  --radius-input: 16px;
 }
 ```
 

@@ -59,7 +59,7 @@ const config: Config = {
         "card-sm": "8px",
         badge: "8px",
         pill: "9999px",
-        input: "12px",
+        input: "16px",
       },
       boxShadow: {
         card: "rgba(35,31,58,0.04) 0px 0px 0px, rgba(35,31,58,0.06) 0px 2px 4px, rgba(35,31,58,0.08) 0px 8px 12px",
