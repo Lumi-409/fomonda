@@ -8,15 +8,18 @@ export function getRecommendedStocks(): Stock[] {
   return DUMMY_STOCK_LIST.filter((stock) => RECOMMENDED_CODES.includes(stock.code));
 }
 
-/**
- * M1 임시 하드코딩 검색. M2에서 금융위원회 KRX 상장종목정보 API 연동으로
- * 교체할 때 이 함수의 내부 구현만 바꾸면 되도록 시그니처를 맞춰둔다.
- */
 export async function searchStocks(query: string): Promise<Stock[]> {
   const trimmed = query.trim();
-  if (!trimmed) return DUMMY_STOCK_LIST;
+  if (!trimmed) return [];
 
-  return DUMMY_STOCK_LIST.filter(
-    (stock) => stock.name.includes(trimmed) || stock.code.includes(trimmed)
-  );
+  try {
+    const res = await fetch(`/api/stocks?q=${encodeURIComponent(trimmed)}`);
+    if (!res.ok) throw new Error(`/api/stocks 요청 실패 (status: ${res.status})`);
+    const data: { stocks: Stock[] } = await res.json();
+    return data.stocks;
+  } catch {
+    return DUMMY_STOCK_LIST.filter(
+      (stock) => stock.name.includes(trimmed) || stock.code.includes(trimmed)
+    );
+  }
 }
