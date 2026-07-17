@@ -68,7 +68,6 @@ export default function ReasonPage() {
       }
 
       const data: { checkCard: CheckCard } = await res.json();
-      trackEvent("Check Completed", { code: draft.stock.code });
       recordJudgment(trimmed, data.checkCard);
       router.push("/result");
     } catch (error) {

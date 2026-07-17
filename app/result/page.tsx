@@ -7,6 +7,7 @@ import { IconAlert, IconBrain, IconCheck, IconThink } from "@/components/icons";
 import { ListItemRow, QuestionRow } from "@/components/check-list-item";
 import { useAppContext } from "@/lib/context/app-context";
 import { trackEvent } from "@/lib/analytics/mixpanel";
+import { trackEvent as trackGaEvent } from "@/lib/analytics/ga";
 
 const TABS = [
   { id: "summary", label: "점검 요약" },
@@ -21,12 +22,21 @@ export default function ResultPage() {
   const [activeTab, setActiveTab] = useState<string>("summary");
 
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const hasTrackedCompletionRef = useRef(false);
 
   useEffect(() => {
     if (!draft.checkCard) {
       router.replace("/search");
     }
   }, [draft.checkCard, router]);
+
+  useEffect(() => {
+    if (!draft.checkCard || hasTrackedCompletionRef.current) return;
+    hasTrackedCompletionRef.current = true;
+    const code = draft.stock?.code;
+    trackEvent("Check Completed", { code });
+    trackGaEvent("Check Completed", { code });
+  }, [draft.checkCard, draft.stock]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

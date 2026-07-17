@@ -12,3 +12,8 @@ export function trackPageView(path: string): void {
   if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") return;
   window.gtag("config", GA_MEASUREMENT_ID, { page_path: path });
 }
+
+export function trackEvent(name: string, params?: Record<string, unknown>): void {
+  if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") return;
+  window.gtag("event", name, params);
+}
