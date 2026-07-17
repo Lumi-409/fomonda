@@ -35,7 +35,7 @@ export default function ResultPage() {
     hasTrackedCompletionRef.current = true;
     const code = draft.stock?.code;
     trackEvent("Check Completed", { code });
-    trackGaEvent("Check Completed", { code });
+    trackGaEvent("check_completed", { code });
   }, [draft.checkCard, draft.stock]);
 
   useEffect(() => {

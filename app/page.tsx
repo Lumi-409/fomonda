@@ -36,7 +36,7 @@ export default function OnboardingPage() {
 
   const handleStart = () => {
     trackEvent("Onboarding Start Clicked");
-    trackGaEvent("Onboarding Start Clicked");
+    trackGaEvent("onboarding_start_clicked");
     if (isReturning) {
       trackEvent("returning_user_new_check_clicked");
     }
