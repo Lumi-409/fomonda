@@ -209,6 +209,16 @@ export default function ResultPage() {
               ))}
             </div>
           </section>
+
+          <section className="flex flex-col gap-xs bg-white px-xl py-[28px]">
+            <p className="text-label-sm text-gray-500">
+              이 판단은{" "}
+              <span className="font-semibold text-gray-700">{draft.stock?.name}</span> 타임라인에
+              기록됐어요.
+              <br />
+              다음에 다시 흔들릴 때, 오늘의 판단과 비교해볼 수 있어요.
+            </p>
+          </section>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import ConfirmDialog from "@/components/confirm-dialog";
 import FeedbackSheet from "@/components/feedback-sheet";
 import { avatarClasses } from "@/components/holding-badge";
-import { IconCheckboxState, IconGear, IconPlus } from "@/components/icons";
+import { IconCheckboxState, IconGear, IconPlus, IconSearch } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
 import { StockEntry } from "@/lib/types";
 import { trackEvent } from "@/lib/analytics/mixpanel";
@@ -218,6 +218,11 @@ export default function ListPage() {
                 {option}
               </button>
             ))}
+          </div>
+
+          <div className="mt-md flex items-center gap-xs">
+            <IconSearch className="shrink-0" />
+            <p className="text-label-sm text-gray-500">종목을 선택하면 다시 점검할 수 있어요</p>
           </div>
         </div>
 

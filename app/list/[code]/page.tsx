@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import BackTopBar from "@/components/back-topbar";
 import { avatarClasses, HoldingBadge } from "@/components/holding-badge";
 import PrimaryButton from "@/components/primary-button";
 import { useAppContext } from "@/lib/context/app-context";
+import { trackEvent } from "@/lib/analytics/mixpanel";
 
 export default function StockTimelinePage() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function StockTimelinePage() {
   const { getEntry, selectStock, setHolding } = useAppContext();
 
   const entry = getEntry(params.code);
+  const hasTrackedViewRef = useRef(false);
 
   useEffect(() => {
     if (!entry) {
@@ -20,11 +22,18 @@ export default function StockTimelinePage() {
     }
   }, [entry, router]);
 
+  useEffect(() => {
+    if (!entry || hasTrackedViewRef.current) return;
+    hasTrackedViewRef.current = true;
+    trackEvent("stock_timeline_viewed", { code: entry.stock.code });
+  }, [entry]);
+
   if (!entry) {
     return null;
   }
 
   const handleRecheck = () => {
+    trackEvent("same_stock_recheck_started", { code: entry.stock.code });
     selectStock(entry.stock);
     setHolding(entry.holding);
     router.push("/reason");
