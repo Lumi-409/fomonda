@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import ConfirmDialog from "@/components/confirm-dialog";
 import FeedbackSheet from "@/components/feedback-sheet";
+import PrimaryButton from "@/components/primary-button";
 import { avatarClasses } from "@/components/holding-badge";
 import { IconCheckboxState, IconGear, IconPlus, IconSearch } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
 import { StockEntry } from "@/lib/types";
+import { hasSeenFeedbackModal, markFeedbackModalSeen } from "@/lib/feedback-modal";
 import { trackEvent } from "@/lib/analytics/mixpanel";
 
 type Tab = "보유" | "관심";
@@ -51,6 +53,26 @@ export default function ListPage() {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const [isFirstVisitModalOpen, setIsFirstVisitModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (hasSeenFeedbackModal()) return;
+    markFeedbackModalSeen();
+    setIsFirstVisitModalOpen(true);
+    trackEvent("feedback_modal_shown");
+  }, []);
+
+  const handleFeedbackModalAccept = () => {
+    trackEvent("feedback_modal_accepted");
+    setIsFirstVisitModalOpen(false);
+    setIsFeedbackOpen(true);
+  };
+
+  const handleFeedbackModalDismiss = () => {
+    trackEvent("feedback_modal_dismissed");
+    setIsFirstVisitModalOpen(false);
+  };
 
   const filtered = useMemo(() => {
     const byTab = entries.filter((entry) => (tab === "보유" ? entry.holding : !entry.holding));
@@ -300,6 +322,33 @@ export default function ListPage() {
       </div>
 
       <FeedbackSheet isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
+
+      {isFirstVisitModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-lg">
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={handleFeedbackModalDismiss}
+            className="absolute inset-0 bg-gray-900/40"
+          />
+          <div className="relative flex w-full max-w-page flex-col gap-lg rounded-card bg-white p-xl shadow-modal">
+            <div>
+              <p className="text-label font-semibold text-gray-900">
+                포몬다 첫 사용 경험 어떠셨나요?
+              </p>
+              <p className="mt-xs text-label-sm text-gray-600">짧은 의견도 큰 도움이 돼요</p>
+            </div>
+            <div className="flex gap-md">
+              <PrimaryButton variant="secondary" className="flex-1" onClick={handleFeedbackModalDismiss}>
+                다음에 할게요
+              </PrimaryButton>
+              <PrimaryButton className="flex-1" onClick={handleFeedbackModalAccept}>
+                의견 남기기
+              </PrimaryButton>
+            </div>
+          </div>
+        </div>
+      )}
 
       <ConfirmDialog
         isOpen={isDeleteConfirmOpen}
