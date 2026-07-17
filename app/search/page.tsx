@@ -60,7 +60,12 @@ export default function SearchPage() {
     let active = true;
     const timer = setTimeout(() => {
       searchStocks(query).then((stocks) => {
-        if (active) setResults(stocks);
+        if (!active) return;
+        setResults(stocks);
+        trackEvent("Search Performed", { query, resultCount: stocks.length });
+        if (stocks.length === 0) {
+          trackEvent("Search No Results", { query });
+        }
       });
     }, 250);
     return () => {

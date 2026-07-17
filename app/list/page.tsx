@@ -232,11 +232,17 @@ export default function ListPage() {
           <button
             key={entry.stock.code}
             type="button"
-            onClick={() =>
-              isEditMode
-                ? toggleSelected(entry.stock.code)
-                : router.push(`/list/${entry.stock.code}`)
-            }
+            onClick={() => {
+              if (isEditMode) {
+                toggleSelected(entry.stock.code);
+                return;
+              }
+              trackEvent("List Entry Clicked", {
+                code: entry.stock.code,
+                name: entry.stock.name,
+              });
+              router.push(`/list/${entry.stock.code}`);
+            }}
             className="flex items-center gap-lg rounded-card border border-gray-200 bg-white py-[16px] pl-[16px] pr-[20px] text-left transition-colors hover:bg-gray-50"
           >
             {isEditMode && (
