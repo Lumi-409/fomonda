@@ -14,7 +14,7 @@ const variantClasses: Record<Variant, string> = {
   secondary:
     "rounded-button px-xl py-lg bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-400",
   ghost:
-    "rounded-card-sm border border-gray-200 px-lg py-sm bg-transparent text-gray-700 hover:bg-gray-50 disabled:border-gray-100 disabled:text-gray-300",
+    "rounded-button px-xl py-lg border border-gray-200 bg-transparent text-gray-700 hover:bg-gray-50 disabled:border-gray-100 disabled:text-gray-300",
 };
 
 export default function PrimaryButton({

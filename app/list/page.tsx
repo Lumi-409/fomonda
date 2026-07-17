@@ -199,7 +199,7 @@ export default function ListPage() {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2xl px-lg pb-2xl">
+      <div className="flex flex-1 flex-col gap-lg px-lg pb-2xl">
         <div>
           <h1 className="text-heading-sub font-semibold text-gray-950">내 종목 리스트</h1>
 
@@ -220,9 +220,9 @@ export default function ListPage() {
             ))}
           </div>
 
-          <div className="mt-md flex items-center gap-xs">
+          <div className="mt-md flex items-center gap-sm rounded-card bg-gray-50 px-lg py-md">
             <IconSearch className="shrink-0" />
-            <p className="text-label-sm text-gray-500">종목을 선택하면 다시 점검할 수 있어요</p>
+            <p className="text-label-sm font-medium text-gray-700">종목을 선택하면 다시 점검할 수 있어요</p>
           </div>
         </div>
 
