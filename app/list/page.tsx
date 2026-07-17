@@ -109,7 +109,13 @@ export default function ListPage() {
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex items-center justify-between px-lg py-lg">
-        <p className="font-logo text-heading-sub text-gray-900">Fomonda</p>
+        <button
+          type="button"
+          onClick={() => router.push("/")}
+          className="font-logo text-heading-sub text-gray-900"
+        >
+          Fomonda
+        </button>
 
         {isEditMode ? (
           <div className="flex items-center gap-md">
