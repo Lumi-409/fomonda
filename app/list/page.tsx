@@ -6,7 +6,7 @@ import ConfirmDialog from "@/components/confirm-dialog";
 import FeedbackSheet from "@/components/feedback-sheet";
 import PrimaryButton from "@/components/primary-button";
 import { avatarClasses } from "@/components/holding-badge";
-import { IconCheckboxState, IconGear, IconPlus, IconSearch } from "@/components/icons";
+import { IconCheckboxState, IconGear, IconLoveLetter, IconPlus, IconSearch } from "@/components/icons";
 import { useAppContext } from "@/lib/context/app-context";
 import { StockEntry } from "@/lib/types";
 import { hasSeenFeedbackModal, markFeedbackModalSeen } from "@/lib/feedback-modal";
@@ -331,14 +331,17 @@ export default function ListPage() {
             onClick={handleFeedbackModalDismiss}
             className="absolute inset-0 bg-gray-900/40"
           />
-          <div className="relative flex w-full max-w-page flex-col gap-lg rounded-card bg-white p-xl shadow-modal">
-            <div>
-              <p className="text-label font-semibold text-gray-900">
+          <div className="relative flex w-full max-w-page flex-col items-center rounded-card bg-white px-xl pb-xl pt-[32px] shadow-modal">
+            <IconLoveLetter className="w-12 h-auto shrink-0" />
+            <div className="mt-lg text-center">
+              <p className="text-heading-sub font-semibold text-gray-900">
                 포몬다 첫 사용 경험 어떠셨나요?
               </p>
-              <p className="mt-xs text-label-sm text-gray-600">짧은 의견도 큰 도움이 돼요</p>
+              <p className="mt-xs text-label-sm text-gray-600">
+                짧은 의견도 남겨주시면 정말 큰 도움이 돼요!
+              </p>
             </div>
-            <div className="flex gap-md">
+            <div className="mt-2xl flex w-full gap-md">
               <PrimaryButton variant="secondary" className="flex-1" onClick={handleFeedbackModalDismiss}>
                 다음에 할게요
               </PrimaryButton>
