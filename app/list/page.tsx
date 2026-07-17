@@ -289,6 +289,14 @@ export default function ListPage() {
           </button>
         )}
         </div>
+
+        <button
+          type="button"
+          onClick={() => router.push("/privacy")}
+          className="mt-auto self-center pt-2xl text-eyebrow text-gray-400 underline underline-offset-2"
+        >
+          개인정보처리방침
+        </button>
       </div>
 
       <FeedbackSheet isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />

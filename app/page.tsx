@@ -84,6 +84,10 @@ export default function OnboardingPage() {
               내 종목 리스트 보기
             </PrimaryButton>
           )}
+          <p className="text-center text-eyebrow text-gray-400">
+            포몬다는 투자 판단을 대신하지 않아요. 본 서비스에서 제공하는 정보는 참고용이며, 투자에
+            대한 최종 책임은 본인에게 있어요.
+          </p>
         </div>
       </div>
     </div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PrimaryButton from "@/components/primary-button";
 import { getOrCreateSessionId } from "@/lib/session";
 import { trackEvent } from "@/lib/analytics/mixpanel";
 
 const MAX_LENGTH = 500;
+const TOAST_DURATION_MS = 2500;
 
 interface FeedbackSheetProps {
   isOpen: boolean;
@@ -16,10 +17,13 @@ export default function FeedbackSheet({ isOpen, onClose }: FeedbackSheetProps) {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
-  if (!isOpen) {
-    return null;
-  }
+  useEffect(() => {
+    if (!showToast) return;
+    const timer = setTimeout(() => setShowToast(false), TOAST_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [showToast]);
 
   const handleClose = () => {
     setContent("");
@@ -46,6 +50,7 @@ export default function FeedbackSheet({ isOpen, onClose }: FeedbackSheetProps) {
 
       trackEvent("Feedback Submitted");
       handleClose();
+      setShowToast(true);
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "의견 등록에 실패했어요. 잠시 후 다시 시도해주세요"
@@ -56,45 +61,55 @@ export default function FeedbackSheet({ isOpen, onClose }: FeedbackSheetProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
-      <button
-        type="button"
-        aria-label="닫기"
-        onClick={handleClose}
-        className="absolute inset-0 bg-gray-900/40"
-      />
-      <div className="relative flex w-full max-w-page flex-col gap-lg rounded-t-card bg-white px-lg pb-2xl pt-md">
-        <div className="mx-auto h-1 w-10 rounded-badge bg-gray-200" />
-
-        <div>
-          <p className="text-heading-sub font-semibold text-gray-950">
-            포몬다에 의견을 남겨주세요
-          </p>
-          <p className="mt-xs text-label-sm text-gray-600">
-            더 나은 서비스를 위해 소중한 의견을 들려주세요
-          </p>
-        </div>
-
-        <div className="flex w-full flex-col rounded-input border border-gray-200 bg-white px-[20px] py-[16px] focus-within:border-gray-800">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value.slice(0, MAX_LENGTH))}
-            maxLength={MAX_LENGTH}
-            rows={4}
-            placeholder="내용을 입력해주세요"
-            className="w-full flex-1 resize-none border-none bg-transparent text-label text-gray-900 outline-none placeholder:text-gray-400"
+    <>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center">
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={handleClose}
+            className="absolute inset-0 bg-gray-900/40"
           />
-          <span className="self-end text-eyebrow text-gray-400">
-            {content.length}/{MAX_LENGTH}
-          </span>
+          <div className="relative flex w-full max-w-page flex-col gap-lg rounded-t-card bg-white px-lg pb-2xl pt-md">
+            <div className="mx-auto h-1 w-10 rounded-badge bg-gray-200" />
+
+            <div>
+              <p className="text-heading-sub font-semibold text-gray-950">
+                포몬다에 의견을 남겨주세요
+              </p>
+              <p className="mt-xs text-label-sm text-gray-600">
+                더 나은 서비스를 위해 소중한 의견을 들려주세요
+              </p>
+            </div>
+
+            <div className="flex w-full flex-col rounded-input border border-gray-200 bg-white px-[20px] py-[16px] focus-within:border-gray-800">
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value.slice(0, MAX_LENGTH))}
+                maxLength={MAX_LENGTH}
+                rows={4}
+                placeholder="내용을 입력해주세요"
+                className="w-full flex-1 resize-none border-none bg-transparent text-label text-gray-900 outline-none placeholder:text-gray-400"
+              />
+              <span className="self-end text-eyebrow text-gray-400">
+                {content.length}/{MAX_LENGTH}
+              </span>
+            </div>
+
+            {errorMessage && <p className="text-label-sm text-pink-700">{errorMessage}</p>}
+
+            <PrimaryButton onClick={handleSubmit} disabled={!content.trim() || isSubmitting}>
+              의견 남기기
+            </PrimaryButton>
+          </div>
         </div>
+      )}
 
-        {errorMessage && <p className="text-label-sm text-pink-700">{errorMessage}</p>}
-
-        <PrimaryButton onClick={handleSubmit} disabled={!content.trim() || isSubmitting}>
-          의견 남기기
-        </PrimaryButton>
-      </div>
-    </div>
+      {showToast && (
+        <p className="fixed bottom-2xl left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-card bg-gray-900 px-lg py-sm text-label-sm text-gray-50">
+          의견 감사해요, 서비스 개선에 참고할게요 🙏
+        </p>
+      )}
+    </>
   );
 }
